@@ -1,0 +1,1 @@
+<iframe class="embed-responsive-item" name="iframe_a" src="{{ $lesson->frame->url }}" title="Iframe Example" width="100%" height="500px"></iframe>

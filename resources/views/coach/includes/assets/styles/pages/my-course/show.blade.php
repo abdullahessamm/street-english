@@ -1,0 +1,2 @@
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/dashboard/css/forms/toggle/bootstrap-switch.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/dashboard/css/forms/toggle/switchery.min.css') }}">
