@@ -1,0 +1,29 @@
+[33mcommit 71552d6fa10af019489ee3f33cc78dcbe55bc5af[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Abdullah Essam <abdoessam.2010@gmail.com>
+Date:   Mon May 8 20:20:02 2023 +0300
+
+    fix for popular courses bugs in ajax (datatable)
+
+[33mcommit ec7df6161d6decbde0daedfc5bf52d042eb0264f[m
+Author: Abdullah Essam <abdoessam.2010@gmail.com>
+Date:   Mon May 8 15:53:02 2023 +0300
+
+    fix some web routes issues & add missing relationship between courses and courses categories
+
+[33mcommit d54e88bad8cc074873614ffceaa09cc82fd40554[m
+Author: Abdullah Essam <abdoessam.2010@gmail.com>
+Date:   Mon May 8 00:40:47 2023 +0300
+
+    fix (AjaxStudentController) not found
+
+[33mcommit 38dc0a3f60050f2f68f1e1d2eb9616a3e139621d[m
+Author: soheilsalah <soheilsalah2@gmail.com>
+Date:   Sun May 7 08:31:30 2023 +0300
+
+    readme has been updated
+
+[33mcommit 408f5cfb757ba294be585c143785716acba5deac[m
+Author: soheilsalah <soheilsalah2@gmail.com>
+Date:   Sun May 7 08:25:59 2023 +0300
+
+    First Commit
