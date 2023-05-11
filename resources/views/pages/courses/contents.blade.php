@@ -224,7 +224,7 @@
 		</div>
 		<form id="createNewContent">
 			{{ csrf_field() }}
-			<input type="hidden" name="ietls_course_id" value="{{ $course->id }}">
+			<input type="hidden" name="course_id" value="{{ $course->id }}">
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="content_name">اسم المحتوي</label>
