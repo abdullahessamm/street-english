@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input choosePriceOption" type="radio" name="choose_price_option" id="price" value="price">
-                                            <label class="form-check-label" for="price">Course</label>
+                                            <label class="form-check-label" for="price">Price</label>
                                         </div>
 										<div class="form-check form-check-inline">
                                             <input class="form-check-input choosePriceOption" type="radio" name="choose_price_option" id="discount" value="discount">

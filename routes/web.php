@@ -151,6 +151,8 @@ Route::post('/ajax/course-category/delete', [AjaxCourseCategoryController::class
 Route::get('/ajax/courses/index', [AjaxCourseController::class, 'index'])->name('ajax.courses.index');
 // ajax call to preview media type
 Route::post('/ajax/course/preview/media-intro-type', [AjaxCourseController::class, 'previewMediaType'])->name('ajax.courses.preview.media-intro-type');
+// ajax call to preview price options
+Route::post('/ajax/course/preview/price-option', [AjaxCourseController::class, 'previewPriceOption'])->name('ajax.courses.preview.price-option');
 // ajax call to create new course
 Route::post('/ajax/course/create', [AjaxCourseController::class, 'create'])->name('ajax.course.create');
 // ajax call to create update existing course

@@ -85,7 +85,7 @@ class AjaxCourseController extends Controller
             'name' => $course_name, 
             'duration' => $duration, 
             'level' => $level, 
-            'language' => $language, 
+            'language' => $language,
             'price' => $price, 
             'discount' => $discount, 
             'media_intro' => $choose_media, 
@@ -923,6 +923,28 @@ class AjaxCourseController extends Controller
 
             case 'none':
                 return '';
+            break;
+        }
+    }
+
+    public function previewPriceOption(Request $request)
+    {
+        $price_option = $request->input('type');
+
+        $course = Course::where('id', $request->input('course_id'))->first();
+        
+        switch($request->input('price_option')){
+
+            case 'price':
+                return view('pages.courses.price-options.price', compact('course'));
+            break;
+
+            case 'discount':
+                return view('pages.courses.price-options.price-discount', compact('course'));
+            break;
+
+            case 'coupon':
+                return view('pages.courses.price-options.coupon', compact('course'));
             break;
         }
     }

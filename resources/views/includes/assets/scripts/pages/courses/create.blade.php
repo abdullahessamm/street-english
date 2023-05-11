@@ -36,6 +36,48 @@ $(document).ready(function(){
 	});
     
     $('.duallistbox').bootstrapDualListbox();
+    
+    var price_option = $(".choosePriceOption:checked").val();
+
+    $.ajax({
+		url : "{{ route('ajax.courses.preview.price-option') }}",
+		type : "POST",
+		data : {
+			"_token" : "{{ csrf_token() }}",
+			 'price_option' : price_option,
+		},
+		beforeSend : function()
+		{
+			$("#price_option_res").html('<div class="text-center"><h4>يتم عرض نوع الوسائط برجاء الانتظار</h4></div>');
+		},
+		success : function(data)
+		{
+			$("#price_option_res").html(data);
+		}
+	});
+
+    $(".choosePriceOption").on('change', function(e){
+		e.preventDefault();
+
+		var price_option = $(this).val();
+        
+        $.ajax({
+			url : "{{ route('ajax.courses.preview.price-option') }}",
+			type : "POST",
+			data : {
+				"_token" : "{{ csrf_token() }}",
+				 'price_option' : price_option,
+			},
+			beforeSend : function()
+			{
+				$("#price_option_res").html('<div class="text-center"><h4>يتم عرض نوع الوسائط برجاء الانتظار</h4></div>');
+			},
+			success : function(data)
+			{
+				$("#price_option_res").html(data);
+			}
+		});
+	});
 
     $(".select2").select2();
 
