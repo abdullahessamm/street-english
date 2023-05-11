@@ -1,5 +1,3 @@
 
-        '{{singularSnake}}.auth' => \{{namespace}}\Http\Middleware\RedirectIfNot{{singularClass}}::class,
-        '{{singularSnake}}.guest' => \{{namespace}}\Http\Middleware\RedirectIf{{singularClass}}::class,
-        // '{{singularSnake}}.verified' => \{{namespace}}\Http\Middleware\Ensure{{singularClass}}EmailIsVerified::class,
-        // '{{singularSnake}}.password.confirm' => \App\Http\Middleware\Require{{singularClass}}Password::class,
+        '{{singularSnake}}.auth' => \App\Http\Middleware\RedirectIfNot{{singularClass}}::class,
+        '{{singularSnake}}.guest' => \App\Http\Middleware\RedirectIf{{singularClass}}::class,

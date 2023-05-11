@@ -8,10 +8,11 @@ use App\Notifications\LiveCourseUser\Auth\ResetPassword;
 use App\Notifications\LiveCourseUser\Auth\VerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\ModelsTraits\Accounts\NameHandler;
 
 class LiveCourseUser extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, NameHandler;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +20,7 @@ class LiveCourseUser extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password', 'gender', 'phone',
     ];
 
     /**

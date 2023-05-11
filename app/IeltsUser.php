@@ -7,10 +7,11 @@ use App\Notifications\IeltsUser\Auth\ResetPassword;
 use App\Notifications\IeltsUser\Auth\VerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\ModelsTraits\Accounts\NameHandler;
 
 class IeltsUser extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, NameHandler;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +19,7 @@ class IeltsUser extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'gender', 'phone',
     ];
 
     /**

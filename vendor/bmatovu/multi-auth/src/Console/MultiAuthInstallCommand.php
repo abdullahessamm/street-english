@@ -3,7 +3,6 @@
 namespace Bmatovu\MultiAuth\Console;
 
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +22,7 @@ class MultiAuthInstallCommand extends Command
      * @var string
      */
     protected $signature = 'multi-auth:install
-                                {name=admin : Name of the guard.}
+                                {name=admin : Name of the guard. Default: \'admin\'}
                                 {--f|force : Whether to override existing files}';
 
     /**
@@ -50,23 +49,21 @@ class MultiAuthInstallCommand extends Command
     {
         $this->info('Initiating...');
 
-        $progress = $this->output->createProgressBar(12);
+        $progress = $this->output->createProgressBar(10);
 
         $this->name = $this->argument('name');
 
         $this->override = $this->option('force') ? true : false;
 
         // Check if guard is already registered
-        if (array_key_exists(Str::singular(Str::snake($this->name)), config('auth.guards'))) {
-
+        if (array_key_exists(str_slug($this->name), config('auth.guards'))) {
             // Guard exists
             $this->exits = true;
 
             if (!$this->option('force')) {
                 $this->info("Guard: '" . $this->name . "' is already registered");
                 if (!$this->confirm('Force override resources...?')) {
-                    $this->info(PHP_EOL . 'Halting scaffolding, try again with a another guard name...');
-                    // throw new \RuntimeException("Halting installation, choose another guard name...");
+                    throw new \RuntimeException("Halting installation, choose another guard name...");
                 }
                 // Override resources
                 $this->override = true;
@@ -98,32 +95,14 @@ class MultiAuthInstallCommand extends Command
 
         $progress->advance();
 
-        // Factories
-        $this->info(PHP_EOL . 'Creating Factory...');
-
-        $factory_path = $this->loadFactory(__DIR__ . '/../../stubs');
-
-        $this->info('Factory created at ' . $factory_path);
-
-        $progress->advance();
-
-        // Notifications
-        $this->info(PHP_EOL . 'Creating Notification...');
-
-        $notification_path = $this->loadNotification(__DIR__ . '/../../stubs');
-
-        $this->info('Notification created at ' . $notification_path);
-
-        $progress->advance();
-
         // Migrations
-        $this->info(PHP_EOL . 'Creating Migrations...');
+        $this->info(PHP_EOL . 'Creating Migration...');
 
         if ($this->exits && $this->override) {
-            $this->info('Migrations\' creation skipped');
+            $this->info('Migration creation skipped');
         } else {
-            $migrations_path = $this->loadMigrations(__DIR__ . '/../../stubs');
-            $this->info('Migrations created at ' . $migrations_path);
+            $model_path = $this->loadMigration(__DIR__ . '/../../stubs');
+            $this->info('Migration created at ' . $model_path);
         }
 
         $progress->advance();
@@ -189,6 +168,8 @@ class MultiAuthInstallCommand extends Command
         $progress->finish();
 
         $this->info(PHP_EOL . 'Installation complete.');
+
+//        $this->info('All is set; http://127.0.0.1:8000/' . str_singular(str_slug($this->name)));
     }
 
     /**
@@ -213,17 +194,16 @@ class MultiAuthInstallCommand extends Command
         if (!$name)
             $name = $this->name;
 
-        return $parsed = [
-            '{{namespace}}' => $this->getNamespace(),
-            '{{pluralCamel}}' => Str::plural(Str::camel($name)),
-            '{{pluralSlug}}' => Str::plural(Str::slug($name)),
-            '{{pluralSnake}}' => Str::plural(Str::snake($name)),
-            '{{pluralClass}}' => Str::plural(Str::studly($name)),
-            '{{singularCamel}}' => Str::singular(Str::camel($name)),
-            '{{singularSlug}}' => Str::singular(Str::slug($name)),
-            '{{singularSnake}}' => Str::singular(Str::snake($name)),
-            '{{singularClass}}' => Str::singular(Str::studly($name)),
-        ];
+        return $parsed = array(
+            '{{pluralCamel}}' => str_plural(camel_case($name)),
+            '{{pluralSlug}}' => str_plural(str_slug($name)),
+            '{{pluralSnake}}' => str_plural(snake_case($name)),
+            '{{pluralClass}}' => str_plural(studly_case($name)),
+            '{{singularCamel}}' => str_singular(camel_case($name)),
+            '{{singularSlug}}' => str_singular(str_slug($name)),
+            '{{singularSnake}}' => str_singular(snake_case($name)),
+            '{{singularClass}}' => str_singular(studly_case($name)),
+        );
     }
 
     /**
@@ -238,6 +218,8 @@ class MultiAuthInstallCommand extends Command
             $auth = file_get_contents(config_path('auth.php'));
 
             $data_map = $this->parseName();
+
+            $data_map['{{namespace}}'] = $this->getNamespace();
 
             /********** Guards **********/
 
@@ -289,9 +271,11 @@ class MultiAuthInstallCommand extends Command
     {
         try {
 
-            $stub = file_get_contents($stub_path . '/model.stub');
+            $stub = file_get_contents($stub_path . '/Model.stub');
 
             $data_map = $this->parseName();
+
+            $data_map['{{namespace}}'] = $this->getNamespace();
 
             $model = strtr($stub, $data_map);
 
@@ -307,111 +291,31 @@ class MultiAuthInstallCommand extends Command
     }
 
     /**
-     * Load factory
+     * Load migration
      * @param $stub_path
      * @return string
      */
-    protected function loadFactory($stub_path)
+    protected function loadMigration($stub_path)
     {
         try {
 
-            $stub = file_get_contents($stub_path . '/factory.stub');
+            $stub = file_get_contents($stub_path . '/migration.stub');
 
             $data_map = $this->parseName();
 
-            $factory = strtr($stub, $data_map);
+            $data_map['{{namespace}}'] = $this->getNamespace();
 
-            $factory_path = database_path('factories/' . $data_map['{{singularClass}}'] . 'Factory.php');
+            $data_map['{{pluralSlug}}'] = str_plural(str_slug($this->name, '_'));
 
-            file_put_contents($factory_path, $factory);
-
-            return $factory_path;
-
-        } catch (Exception $ex) {
-            throw new \RuntimeException($ex->getMessage());
-        }
-    }
-
-    /**
-     * Load notification
-     * @param $stub_path
-     * @return string
-     */
-    protected function loadNotification($stub_path)
-    {
-        try {
-
-            $data_map = $this->parseName();
-
-            $notifications_path = app_path('/Notifications/' . $data_map['{{singularClass}}'] . '/Auth');
-
-            $notifications = array(
-                [
-                    'stub' => $stub_path . '/Notifications/ResetPassword.stub',
-                    'path' => $notifications_path . '/ResetPassword.php',
-                ],
-                [
-                    'stub' => $stub_path . '/Notifications/VerifyEmail.stub',
-                    'path' => $notifications_path . '/VerifyEmail.php',
-                ],
-            );
-
-            foreach ($notifications as $notification) {
-                $stub = file_get_contents($notification['stub']);
-                $complied = strtr($stub, $data_map);
-
-                $dir = dirname($notification['path']);
-                if (!is_dir($dir)) {
-                    mkdir($dir, 0755, true);
-                }
-
-                file_put_contents($notification['path'], $complied);
-            }
-
-            return $notifications_path;
-
-        } catch (Exception $ex) {
-            throw new \RuntimeException($ex->getMessage());
-        }
-    }
-
-    /**
-     * Load migrations
-     * @param $stub_path
-     * @return string
-     */
-    protected function loadMigrations($stub_path)
-    {
-        try {
-
-            $data_map = $this->parseName();
+            $migration = strtr($stub, $data_map);
 
             $signature = date('Y_m_d_His');
 
-            $migrations = array(
-                [
-                    'stub' => $stub_path . '/migrations/provider.stub',
-                    'path' => database_path('migrations/' . $signature . '_create_' . $data_map['{{pluralSnake}}'] . '_table.php'),
-                ],
-                [
-                    'stub' => $stub_path . '/migrations/password_resets.stub',
-                    'path' => database_path('migrations/' . $signature . '_create_' . $data_map['{{singularSnake}}'] . '_password_resets_table.php'),
-                ],
-            );
+            $migration_path = database_path('migrations/' . $signature . '_create_' . $data_map['{{pluralSnake}}'] . '_table.php');
 
-            foreach ($migrations as $migration) {
-                $stub = file_get_contents($migration['stub']);
-                $complied = strtr($stub, $data_map);
+            file_put_contents($migration_path, $migration);
 
-                $dir = dirname($migration['path']);
-                if (!is_dir($dir)) {
-                    mkdir($dir, 0755, true);
-                }
-
-                file_put_contents($migration['path'], $complied);
-            }
-
-            return database_path('migrations');
+            return $migration_path;
 
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
@@ -426,6 +330,10 @@ class MultiAuthInstallCommand extends Command
     protected function loadControllers($stub_path)
     {
         $data_map = $this->parseName();
+
+        $data_map['{{namespace}}'] = $this->getNamespace();
+
+        $data_map['{{pluralSlug}}'] = str_plural(str_slug($this->name, '_'));
 
         $guard = $data_map['{{singularClass}}'];
 
@@ -451,15 +359,7 @@ class MultiAuthInstallCommand extends Command
             [
                 'stub' => $stub_path . '/Controllers/Auth/ResetPasswordController.stub',
                 'path' => $controllers_path . '/Auth/ResetPasswordController.php',
-            ],
-            [
-                'stub' => $stub_path . '/Controllers/Auth/VerificationController.stub',
-                'path' => $controllers_path . '/Auth/VerificationController.php',
-            ],
-            [
-                'stub' => $stub_path . '/Controllers/Auth/ConfirmPasswordController.stub',
-                'path' => $controllers_path . '/Auth/ConfirmPasswordController.php',
-            ],
+            ]
         );
 
         foreach ($controllers as $controller) {
@@ -486,6 +386,8 @@ class MultiAuthInstallCommand extends Command
     {
         $data_map = $this->parseName();
 
+        $data_map['{{namespace}}'] = $this->getNamespace();
+
         $guard = $data_map['{{singularSlug}}'];
 
         $views_path = resource_path('views/' . $guard);
@@ -508,20 +410,12 @@ class MultiAuthInstallCommand extends Command
                 'path' => $views_path . '/auth/register.blade.php',
             ],
             [
-                'stub' => $stub_path . '/views/auth/verify.blade.stub',
-                'path' => $views_path . '/auth/verify.blade.php',
-            ],
-            [
                 'stub' => $stub_path . '/views/auth/passwords/email.blade.stub',
                 'path' => $views_path . '/auth/passwords/email.blade.php',
             ],
             [
                 'stub' => $stub_path . '/views/auth/passwords/reset.blade.stub',
                 'path' => $views_path . '/auth/passwords/reset.blade.php',
-            ],
-            [
-                'stub' => $stub_path . '/views/auth/passwords/confirm.blade.stub',
-                'path' => $views_path . '/auth/passwords/confirm.blade.php',
             ],
         );
 
@@ -581,9 +475,16 @@ class MultiAuthInstallCommand extends Command
 
             $data_map = $this->parseName();
 
+            $data_map['{{namespace}}'] = $this->getNamespace();
+
             /********** Function **********/
 
             $stub = $stub_path . '/routes/map.stub';
+
+            // If laravel version 5.3
+            if (substr(app()->version(), 0, 3) == "5.3") {
+                $stub = $stub_path . '/routes/map5.3.stub';
+            }
 
             $map = file_get_contents($stub);
 
@@ -624,31 +525,25 @@ class MultiAuthInstallCommand extends Command
 
             $data_map = $this->parseName();
 
+            $data_map['{{namespace}}'] = $this->getNamespace();
+
             $middleware_path = app_path('Http/Middleware');
 
-            $middlewares = array(
-                [
-                    'stub' => $stub_path . '/Middleware/RedirectIfAuthenticated.stub',
-                    'path' => $middleware_path . '/RedirectIf' . $data_map['{{singularClass}}'] . '.php',
-                ],
-                [
-                    'stub' => $stub_path . '/Middleware/RedirectIfNotAuthenticated.stub',
-                    'path' => $middleware_path . '/RedirectIfNot' . $data_map['{{singularClass}}'] . '.php',
-                ],
-                [
-                    'stub' => $stub_path . '/Middleware/EnsureEmailIsVerified.stub',
-                    'path' => $middleware_path . '/Ensure' . $data_map['{{singularClass}}'] . 'EmailIsVerified.php',
-                ],
-                [
-                    'stub' => $stub_path . '/Middleware/RequirePassword.stub',
-                    'path' => $middleware_path . '/Require' . $data_map['{{singularClass}}'] . 'Password.php',
-                ],
-            );
+            // ...
 
-            foreach ($middlewares as $middleware) {
-                $stub = file_get_contents($middleware['stub']);
-                file_put_contents($middleware['path'], strtr($stub, $data_map));
-            }
+            $stub = file_get_contents($stub_path . '/Middleware/RedirectIfAuthenticated.stub');
+
+            $guest_middleware = strtr($stub, $data_map);
+
+            file_put_contents($middleware_path . '/RedirectIf' . $data_map['{{singularClass}}'] . '.php', $guest_middleware);
+
+            // ...
+
+            $stub = file_get_contents($stub_path . '/Middleware/RedirectIfNotAuthenticated.stub');
+
+            $middleware = strtr($stub, $data_map);
+
+            file_put_contents($middleware_path . '/RedirectIfNot' . $data_map['{{singularClass}}'] . '.php', $middleware);
 
             return $middleware_path;
 

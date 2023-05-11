@@ -5,13 +5,16 @@ namespace App\Models\Students;
 use App\Models\Bundles\BundleUser;
 use App\Models\EnrolledStudents\EnrolledStudentForOnlineCourse;
 use Illuminate\Database\Eloquent\Model;
+use App\ModelsTraits\Accounts\NameHandler;
 
 class Student extends Model
 {
+    use NameHandler;
+
     protected $table = 'users';
     
     protected $fillable = [
-        'name', 'email', 'password', 'image'
+        'name', 'email', 'password', 'image', 'gender', 'phone',
     ];
 
     protected $hidden = [
