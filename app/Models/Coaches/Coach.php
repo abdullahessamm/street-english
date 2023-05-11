@@ -3,14 +3,21 @@
 namespace App\Models\Coaches;
 
 use App\Models\OnlineCourses\OnlineCourseInstructor;
+use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Database\Eloquent\Model;
 
 class Coach extends Model
 {
+    use NameHandler;
+
     protected $table = 'coaches';
     
     protected $fillable = [
-        'name', 'email', 'password'
+        'name',
+        'gender',
+        'email',
+        'phone',
+        'password',
     ];
 
     

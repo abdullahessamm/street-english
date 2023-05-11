@@ -2,15 +2,16 @@
 
 namespace App;
 
+use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, NameHandler;
 
-    protected $table = 'admin';
+    protected $table = 'admin'; 
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +19,10 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'gender',
+        'email',
+        'password'
     ];
 
     /**

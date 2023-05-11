@@ -2,10 +2,13 @@
 
 namespace App\Models\ZoomCourses;
 
+use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Database\Eloquent\Model;
 
 class ZoomCourseUser extends Model
 {
+    use NameHandler;
+
     protected $table = 'live_course_users';
     /**
      * The attributes that are mass assignable.
@@ -13,7 +16,11 @@ class ZoomCourseUser extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'gender',
+        'email',
+        'phone',
+        'password',
     ];
 
     /**
