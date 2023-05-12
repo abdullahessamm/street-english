@@ -174,6 +174,7 @@ class AjaxBundleController extends Controller
             BundleUser::firstOrCreate(['bundle_id' => $bundle_id, 'user_id' => $user_id], [
                 'bundle_id' => $bundle_id,
                 'user_id' => $user_id,
+                'slug' => 'null for now'
             ]);
         }
 
