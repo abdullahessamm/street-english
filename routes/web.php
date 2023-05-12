@@ -22,6 +22,7 @@ use App\Http\Controllers\Pages\EnrolledStudentsForIETLSCourses\AjaxEnrolledStude
 use App\Http\Controllers\Pages\EnrolledStudentsForIETLSCourses\EnrolledStudentsForIETLSCourseController;
 use App\Http\Controllers\Pages\EnrolledStudentsForZoomCourses\AjaxEnrolledStudentsForZoomCourseController;
 use App\Http\Controllers\Pages\EnrolledStudentsForZoomCourses\EnrolledStudentsForZoomCourseController;
+use App\Http\Controllers\Pages\Exams\AjaxExamController;
 use App\Http\Controllers\Pages\Exams\ExamController;
 use App\Http\Controllers\Pages\Exams\RegistedUsersExam\AjaxRegistedUserExamController;
 use App\Http\Controllers\Pages\Exams\RegistedUsersExam\RegistedUserExamController;
@@ -621,41 +622,41 @@ Route::get('/exam/preview/{slug}', [ExamController::class, 'preview'])->name('ex
 Route::post('/exam/choose-time-type', [ExamController::class, 'previewExamTimeType'])->name('exam.choose-time-type');
 
 // ajax call to view view list of all exams
-Route::get('/ajax/exams/index', [ExamController::class, 'index'])->name('ajax.exams.index');
+Route::get('/ajax/exams/index', [AjaxExamController::class, 'index'])->name('ajax.exams.index');
 // ajax call to create new exam
-Route::post('/ajax/exam/create', [ExamController::class, 'create'])->name('ajax.exam.create');
+Route::post('/ajax/exam/create', [AjaxExamController::class, 'create'])->name('ajax.exam.create');
 // ajax call to update exam
-Route::post('/ajax/exam/update', [ExamController::class, 'update'])->name('ajax.exam.update');
+Route::post('/ajax/exam/update', [AjaxExamController::class, 'update'])->name('ajax.exam.update');
 // ajax call to delete exam
-Route::post('/ajax/exam/delete', [ExamController::class, 'delete'])->name('ajax.exam.delete');
+Route::post('/ajax/exam/delete', [AjaxExamController::class, 'delete'])->name('ajax.exam.delete');
 // ajax call to set exam for anyone
-Route::post('/ajax/exam/public', [ExamController::class, 'forAnyOne'])->name('ajax.exam.public');
+Route::post('/ajax/exam/public', [AjaxExamController::class, 'forAnyOne'])->name('ajax.exam.public');
 // ajax call to set exam for registed one
-Route::post('/ajax/exam/private', [ExamController::class, 'forRegistedUsers'])->name('ajax.exam.private');
+Route::post('/ajax/exam/private', [AjaxExamController::class, 'forRegistedUsers'])->name('ajax.exam.private');
 // ajax call to publish exam
-Route::post('/ajax/exam/publish', [ExamController::class, 'publish'])->name('ajax.exam.publish');
+Route::post('/ajax/exam/publish', [AjaxExamController::class, 'publish'])->name('ajax.exam.publish');
 // ajax call to un-publish exam
-Route::post('/ajax/exam/un-publish', [ExamController::class, 'unPublish'])->name('ajax.exam.un-publish');
+Route::post('/ajax/exam/un-publish', [AjaxExamController::class, 'unPublish'])->name('ajax.exam.un-publish');
 // ajax call to create new exam section
-Route::post('/ajax/exam/section/create', [ExamController::class, 'createSection'])->name('ajax.exam.section.create');
+Route::post('/ajax/exam/section/create', [AjaxExamController::class, 'createSection'])->name('ajax.exam.section.create');
 // ajax call to update exam section
-Route::post('/ajax/exam/section/update', [ExamController::class, 'updateSection'])->name('ajax.exam.section.update');
+Route::post('/ajax/exam/section/update', [AjaxExamController::class, 'updateSection'])->name('ajax.exam.section.update');
 // ajax call to delete exam section
-Route::post('/ajax/exam/section/delete', [ExamController::class, 'deleteSection'])->name('ajax.exam.section.delete');
+Route::post('/ajax/exam/section/delete', [AjaxExamController::class, 'deleteSection'])->name('ajax.exam.section.delete');
 // ajax call to create new question
-Route::post('/ajax/exam/section/question/create', [ExamController::class, 'createQuestion'])->name('ajax.exam.section.question.create');
+Route::post('/ajax/exam/section/question/create', [AjaxExamController::class, 'createQuestion'])->name('ajax.exam.section.question.create');
 // ajax call to update question
-Route::post('/ajax/exam/section/question/update', [ExamController::class, 'updateQuestion'])->name('ajax.exam.section.question.update');
+Route::post('/ajax/exam/section/question/update', [AjaxExamController::class, 'updateQuestion'])->name('ajax.exam.section.question.update');
 // ajax call to delete question
-Route::post('/ajax/exam/section/question/delete', [ExamController::class, 'deleteQuestion'])->name('ajax.exam.section.question.delete');
+Route::post('/ajax/exam/section/question/delete', [AjaxExamController::class, 'deleteQuestion'])->name('ajax.exam.section.question.delete');
 // ajax call to update question score
-Route::post('/ajax/exam/question/score/update', [ExamController::class, 'updateQuestionScore'])->name('ajax.exam.question.score.update');
+Route::post('/ajax/exam/question/score/update', [AjaxExamController::class, 'updateQuestionScore'])->name('ajax.exam.question.score.update');
 // ajax call to update answer
-Route::post('/ajax/exam/answer/update', [ExamController::class, 'updateAnswer'])->name('ajax.exam.answer.update');
+Route::post('/ajax/exam/answer/update', [AjaxExamController::class, 'updateAnswer'])->name('ajax.exam.answer.update');
 // ajax call to delete answer
-Route::post('/ajax/exam/answer/delete', [ExamController::class, 'deleteAnswer'])->name('ajax.exam.answer.delete');
+Route::post('/ajax/exam/answer/delete', [AjaxExamController::class, 'deleteAnswer'])->name('ajax.exam.answer.delete');
 // ajax call to update correct answer
-Route::post('/ajax/exam/correct-answer/update', [ExamController::class, 'updateCorrectAnswer'])->name('ajax.exam.correct-answer.update');
+Route::post('/ajax/exam/correct-answer/update', [AjaxExamController::class, 'updateCorrectAnswer'])->name('ajax.exam.correct-answer.update');
 /* End Exams Pages */
 
 
