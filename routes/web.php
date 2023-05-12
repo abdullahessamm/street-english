@@ -27,8 +27,8 @@ use App\Http\Controllers\Pages\Exams\RegistedUsersExam\AjaxRegistedUserExamContr
 use App\Http\Controllers\Pages\Exams\RegistedUsersExam\RegistedUserExamController;
 use App\Http\Controllers\Pages\Exercise\ExerciseController;
 use App\Http\Controllers\Pages\IETLSCourses\AjaxIETLSCoursesController;
-use App\Http\Controllers\Pages\IETLSCourses\AjaxIETLSCoursesCategoryController;
-use App\Http\Controllers\Pages\IETLSCourses\IETLSCourseCategoryController;
+use App\Http\Controllers\Pages\IETLSCourses\Categories\AjaxIETLSCoursesCategoryController;
+use App\Http\Controllers\Pages\IETLSCourses\Categories\IETLSCourseCategoryController;
 use App\Http\Controllers\Pages\IETLSCourses\IETLSCourseController;
 use App\Http\Controllers\Pages\IETLSCourses\IETLSCoursesUsers\AjaxIETLSCourseUserController;
 use App\Http\Controllers\Pages\IETLSCourses\IETLSCoursesUsers\IETLSCourseUserController;

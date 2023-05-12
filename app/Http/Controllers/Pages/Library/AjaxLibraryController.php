@@ -34,10 +34,10 @@ class AjaxLibraryController extends Controller
     {
         $book_name = $request->input('book_name');
         $page_number = $request->input('page_number');
-        $short_description = $request->input('short_description');
+        $short_description = "test description";
         $summary = $request->input('summary');
         $bookCover = $request->file('book_cover');
-        $bookBackground = $request->file('book_background');
+        $bookBackground = '#eee';
         $book_type = $request->input('choose_book_type');
         $download_avaliable = $request->input('download_avaliable') != null && $request->input('download_avaliable') == 'on' ? 1 : 0;
         $slug = $this->slugify($book_name);
@@ -78,7 +78,7 @@ class AjaxLibraryController extends Controller
             'short_description' => $short_description,
             'summary' => $summary,
             'book_cover' => 'cover.'.$bookCover->getClientOriginalExtension(),
-            // 'book_background' => 'background.'.$bookBackground->getClientOriginalExtension(),
+            'book_background' => $bookBackground,
             'book' => $book,
             'download_avaliable' => $download_avaliable,
             'slug' => $slug,

@@ -257,7 +257,7 @@ class AjaxIETLSCoursesController extends Controller
     // create content for the course
     public function createContent(Request $request)
     {
-        $Ietls_course_id = $request->input('Ietls_course_id');
+        $Ietls_course_id = $request->input('ietls_course_id');
         $content_name = $request->input('content_name');
         $description = $request->input('description');
         $slug = $this->slugify($content_name);
