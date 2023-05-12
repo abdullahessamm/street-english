@@ -63,6 +63,8 @@ class AjaxPublicCertificate extends Controller
                 'certificate_name' => $certificate_name,
                 'serial' => "SE" . sprintf("%'.010d", $cert_num),
                 'slug' => md5(uniqid()),
+                'certificate_type' => 'null for now',
+                'certificate_image' => 'null for now'
             ]);
         }
 

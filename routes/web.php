@@ -566,7 +566,7 @@ Route::post('/ajax/public-certificate/delete-all', [AjaxPublicCertificate::class
 
 /* Start Blogs Pages */
 // Blogs Views
-Route::get('/blogs', [AjaxBlogController::class, 'index'])->name('blogs');
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
 Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
 Route::get('/blog/show/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
