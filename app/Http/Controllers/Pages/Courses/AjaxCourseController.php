@@ -53,7 +53,7 @@ class AjaxCourseController extends Controller
         $choose_media = $request->input('choose_media');
         $image = null;
         $video_url = $request->input('video');
-        $instructors = $request->input('coaches') != null ? $request->input('coaches') : null;
+        $instructors = $request->input('coaches');
         $slug = $this->slugify($course_name);
 
         // check if at least one instructor choosen
@@ -94,6 +94,7 @@ class AjaxCourseController extends Controller
             'thumbnail' => 'thumbnail.'.$thumbnail->getClientOriginalExtension(), 
             'description' => $description,
             'slug' => $slug,
+            'isPublished' => 1,
         ];
 
         // upload course data
