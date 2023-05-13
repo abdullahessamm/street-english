@@ -815,37 +815,6 @@ class AjaxCourseController extends Controller
     }
 
     // create lesson context
-    public function createLessonContext(Request $request)
-    {
-        $lesson_id = $request->input('lesson_id');
-        $content = $request->input('lesson_description');
-
-        CourseLessonContext::firstOrCreate(['course_lesson_id' => $lesson_id],[
-            'course_lesson_id' => $lesson_id,
-            'content' => $content,
-        ]);
-
-        $this->successMsg("تم اضافة محتوي كتابي لهذا الدرس");
-
-        $this->reloadPage();
-    }
-
-    // update lesson context
-    public function updateLessonContext(Request $request)
-    {
-        $lesson_context_id = $request->input('lesson_context_id');
-        $content = $request->input('lesson_description');
-
-        CourseLessonContext::where('id', $lesson_context_id)->update([
-            'content' => $content,
-        ]);
-
-        $this->successMsg("تم تحديث المحتوي كتابي الخاص بهذا الدرس");
-
-        $this->reloadPage();
-    }
-
-    // create lesson context
     public function createLessonFrame(Request $request)
     {
         $lesson_id = $request->input('lesson_id');

@@ -216,10 +216,6 @@ Route::post('/ajax/course/content/lesson/doc/is-downloadble', [AjaxCourseControl
 Route::post('/ajax/course/content/lesson/doc/update', [AjaxCourseController::class, 'updateDocLesson'])->name('ajax.course.content.lesson.doc.update');
 // ajax call to update lesson doc pages
 Route::post('/ajax/course/content/lesson/doc/pages/update', [AjaxCourseController::class, 'updateDocPagesLesson'])->name('ajax.course.content.lesson.doc.pages.update');
-// ajax call to create lesson context
-Route::post('/ajax/course/content/lesson/context/create', [AjaxCourseController::class, 'createLessonContext'])->name('ajax.course.content.lesson.context.create');
-// ajax call to update lesson context
-Route::post('/ajax/course/content/lesson/context/update', [AjaxCourseController::class, 'updateLessonContext'])->name('ajax.course.content.lesson.context.update');
 // ajax call to create lesson iframe
 Route::post('/ajax/course/content/lesson/iframe/create', [AjaxCourseController::class, 'createLessonFrame'])->name('ajax.course.content.lesson.iframe.create');
 // ajax call to update lesson iframe

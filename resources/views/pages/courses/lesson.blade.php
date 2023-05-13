@@ -56,7 +56,6 @@
 		                            <div class="col-md-7">
 										<select name="lesson_type" class="form-control" id="lesson_type">
 											<option value="video">فيديو</option>
-											<option value="context">محتوي كتابي</option>
 											<option value="doc">ملف</option>
 											<option value="frame">إطار</option>
 											<option value="exercise">اسئلة تدريبية</option>
@@ -74,10 +73,6 @@
 										
 											@case('doc')
 												<input type="text" class="form-control" value="ملف"  disabled>
-											@break
-
-											@case('context')
-												<input type="text" class="form-control" value="محتوي كتابي"  disabled>
 											@break
 
 											@case('frame')
@@ -135,7 +130,7 @@
 		                            </div>
 		                        </div>
 
-								@if($lesson->type != 'context' && $lesson->type != 'frame')
+								@if($lesson->type != 'frame')
 								<div class="form-group row">
 	                            	<label class="col-md-3 label-control" for="lesson_description">شرح الدرس</label>
 		                            <div class="col-md-7">
@@ -174,9 +169,7 @@
 			'lesson' => $lesson
 		])
 	@break
-
-	@case('context')
-		@include('pages.courses.lesson-type.context')
+	
 	@break
 
 	@case('frame')
