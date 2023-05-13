@@ -122,6 +122,10 @@
 												<p class="font-weight-bold">اطار</p>
 											@break
 
+											@case('exercise')
+												<p class="font-weight-bold">أسئلة تدريبية</p>
+											@break
+
 											@default
 												<p class="font-weight-bold text-danger">لم يتم التحديد بعد</p>
 											@break
