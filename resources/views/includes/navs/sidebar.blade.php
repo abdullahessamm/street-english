@@ -165,15 +165,6 @@
 				</a>
 			</li>
 			
-			<li class="nav-item {{ isset($active) && $active == 'instructors-for-ietls-course' ? 'active' : '' }}">
-				<a href="{{ route('instructors-for-ietls-courses') }}">
-					<i class="icon-earphones-alt"></i>
-					<span class="menu-title">
-						المحاضرين بدورات IELTS 
-					</span>
-				</a>
-			</li>
-			
 			<li class="nav-item {{ isset($active) && $active == 'enrolled-students-for-ietls-courses' ? 'active' : '' }}">
 				<a href="{{ route('enrolled-students-for-ietls-courses') }}">
 					<i class="icon-user-following"></i>

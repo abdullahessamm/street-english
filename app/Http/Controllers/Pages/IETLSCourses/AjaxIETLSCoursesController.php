@@ -91,6 +91,7 @@ class AjaxIETLSCoursesController extends Controller
             'thumbnail' => 'thumbnail.'.$thumbnail->getClientOriginalExtension(), 
             'description' => $description,
             'slug' => $slug,
+            'isPublished' => 1,
         ];
 
         // upload course data
