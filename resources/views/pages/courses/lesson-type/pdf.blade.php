@@ -26,9 +26,9 @@
 									</label>
 									<div class="col-md-9">
 										@if($lesson->doc->isDownloadable == 1)
-										<iframe src="{{ config('app.main_url').'/uploads/ielts-courses/'.$lesson->belongsToContent->belongsToCourse->id.'/contents/'.$lesson->belongsToContent->id.'/lessons/'.$lesson->id.'/'.$lesson->doc->pdf }}" width="100%" height="500px"></iframe>
+										<iframe src="{{ config('app.main_url').'/uploads/courses/'.$lesson->belongsToContent->belongsToCourse->id.'/contents/'.$lesson->belongsToContent->id.'/lessons/'.$lesson->id.'/'.$lesson->doc->pdf }}" width="100%" height="500px"></iframe>
 										@else
-										<iframe src="{{ config('app.main_url').'/uploads/ielts-courses/'.$lesson->belongsToContent->belongsToCourse->id.'/contents/'.$lesson->belongsToContent->id.'/lessons/'.$lesson->id.'/'.$lesson->doc->pdf.'#toolbar=0' }}" width="100%" height="500px"></iframe>
+										<iframe src="{{ config('app.main_url').'/uploads/courses/'.$lesson->belongsToContent->belongsToCourse->id.'/contents/'.$lesson->belongsToContent->id.'/lessons/'.$lesson->id.'/'.$lesson->doc->pdf.'#toolbar=0' }}" width="100%" height="500px"></iframe>
 										@endif
 									</div>
 								</div>

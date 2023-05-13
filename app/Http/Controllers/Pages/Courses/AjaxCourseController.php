@@ -765,7 +765,7 @@ class AjaxCourseController extends Controller
 
         $doc_file_name = md5(uniqid());
 
-        $lesson_path = $this->getUniversalPath('public/public/uploads/courses/'.$lesson->belongsToContent->belongsToCourse->id.'/contents/'.$lesson->belongsToContent->id.'/lessons/'.$lesson_id);
+        $lesson_path = $this->getUniversalPath('public/uploads/courses/'.$lesson->belongsToContent->belongsToCourse->id.'/contents/'.$lesson->belongsToContent->id.'/lessons/'.$lesson_id);
         
         $this->isFileExtAllowed(['pdf'], $doc->getClientOriginalExtension(), 'Doc extension is not allowed');
 
