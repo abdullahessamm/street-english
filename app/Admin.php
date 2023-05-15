@@ -6,10 +6,11 @@ use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Authenticatable
 {
-    use Notifiable, NameHandler;
+    use Notifiable, NameHandler, HasApiTokens;
 
     protected $table = 'admin'; 
 

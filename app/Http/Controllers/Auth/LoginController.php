@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Admin;
 use App\Http\Controllers\Controller;
+use App\Models\ApiToken;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Client\Response;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +40,40 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * overrid default login function to create api token while logging in
+     *
+     * @param Request $req
+     */
+    public function login(Request $req) {
+        if (auth()->attempt(['email' => $req->email, 'password' => $req->password], true)) {
+            $admin = auth()->user();
+            $token = $admin->createToken('admin-' . $admin->id . '-web-access');
+            return redirect()->route('home')->withCookie(cookie('token', $token->plainTextToken, 60*24*365*80, null, null, null, false));
+        }
+
+        if (Admin::where('email', $req->email)->first())
+            return back()->withErrors(['password' => 'Wrong password.']);
+        else 
+            return back()->withErrors(['email' => 'Email not found in our database.']);
+    }
+
+    /**
+     * overrid default logout function to remove api token while logging out
+     *
+     * @param Request $req
+     */
+    public function logout(Request $request)
+    {
+        auth()->logout();
+
+        if ($request->hasCookie('token')) {
+            $token = ApiToken::findToken($request->cookie('token'));
+            $token->delete();
+        }
+
+        return redirect()->route('login')->withCookie(cookie('token', null, 0, null, null, null, false));
     }
 }

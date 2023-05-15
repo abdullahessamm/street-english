@@ -19,7 +19,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    Your token is: {{ request()->cookie('token') }}
                 </div>
             </div>
         </div>
