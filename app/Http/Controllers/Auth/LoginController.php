@@ -71,7 +71,7 @@ class LoginController extends Controller
 
         if ($request->hasCookie('token')) {
             $token = ApiToken::findToken($request->cookie('token'));
-            $token->delete();
+            $token ? $token->delete() : null;
         }
 
         return redirect()->route('login')->withCookie(cookie('token', null, 0, null, null, null, false));
