@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        //register models observers
+        \App\Admin::observe(\App\Observers\AdminObserver::class);
     }
 }
