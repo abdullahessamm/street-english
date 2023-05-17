@@ -50,7 +50,7 @@ class LoginController extends Controller
     public function login(Request $req) {
         if (auth()->attempt(['email' => $req->email, 'password' => $req->password], true)) {
             $admin = auth()->user();
-            $token = $admin->createToken('admin-' . $admin->id . '-web-access');
+            $token = $admin->createToken('admin-' . $admin->id . '-web-access', $admin->getAbilities());
             return redirect()->route('home')->withCookie(cookie('token', $token->plainTextToken, 60*24*365*80, null, null, null, false));
         }
 

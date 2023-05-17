@@ -3,7 +3,6 @@
 namespace App;
 
 use App\ModelsTraits\Accounts\NameHandler;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,7 +11,7 @@ class Admin extends Authenticatable
 {
     use Notifiable, NameHandler, HasApiTokens;
 
-    protected $table = 'admin'; 
+    protected $table = 'admin';
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +22,8 @@ class Admin extends Authenticatable
         'name',
         'gender',
         'email',
-        'password'
+        'password',
+        'abilities'
     ];
 
     /**
@@ -43,4 +43,33 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAbilities(): array
+    {
+        return $this->abilities ? explode(',', $this->abilities) : [];
+    }
+
+    public function addAbility(string $ability): void
+    {
+        if (isset($this->abilities)) {
+            if (strpos($this->abilities, $ability) === false && $this->abilities !== '*')
+                $this->abilities = strlen($this->abilities) == 0 ? $ability : $this->abilities . ',' . $ability;
+        }
+        else
+            $this->abilities = $ability;
+    }
+
+    public function removeAbility(string $ability): void
+    {
+        if (isset($this->abilities)) {
+            $newAbilities = str_replace([
+                $ability . ',',
+                $ability
+            ], [
+                '',''
+            ], $this->abilities);
+            
+            $this->abilities = trim($newAbilities, ',');
+        }
+    }
 }

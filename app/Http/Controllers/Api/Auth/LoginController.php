@@ -13,7 +13,7 @@ class LoginController
         // success credentials case
         if (auth()->attempt(['email' => $req->email, 'password' => $req->password], false)) {
             $admin = auth()->user();
-            $token = $admin->createToken('admin-' . $admin->id . '-web-access');
+            $token = $admin->createToken('admin-' . $admin->id . '-web-access', $admin->getAbilities());
             return response()->json([
                 'success'   => true,
                 'token'     => $token->plainTextToken,
