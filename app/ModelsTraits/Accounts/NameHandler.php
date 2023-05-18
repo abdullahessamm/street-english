@@ -22,4 +22,16 @@ trait NameHandler {
         ];
     }
 
+    public function updateName(string $f_name = null, string $l_name = null): void
+    {
+        $nameAsFirstLast = $this->getNameAsFirstLastAttribute();
+        
+        if ($f_name && $l_name)
+            $this->name = "$f_name $l_name";
+        else if ($f_name)
+            $this->name = $f_name . ' ' . $nameAsFirstLast['l_name'];
+        else if ($l_name)
+            $this->name = $nameAsFirstLast['f_name'] . ' ' . $l_name;
+    }
+
 }

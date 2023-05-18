@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// authentication routes
 Route::prefix('/auth')
 ->controller(LoginController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'auth.php');
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    // users routes
+    Route::prefix('/users')
+    ->group(__DIR__ . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'index.php');
+});

@@ -11,6 +11,17 @@ class Admin extends Authenticatable
 {
     use Notifiable, NameHandler, HasApiTokens;
 
+    const ABILITIES_AVAILABLE = [
+        'admins:index',
+        'admins:update',
+        'admins:create',
+        'admins:delete',
+    ];
+    const ABILITIES_USERS_ADMINS_INDEX = 'admins:index';
+    const ABILITIES_USERS_ADMINS_UPDATE = 'admins:update';
+    const ABILITIES_USERS_ADMINS_CREATE = 'admins:create';
+    const ABILITIES_USERS_ADMINS_DELETE = 'admins:delete';
+
     protected $table = 'admin';
 
     /**
@@ -47,6 +58,12 @@ class Admin extends Authenticatable
     public function getAbilities(): array
     {
         return $this->abilities ? explode(',', $this->abilities) : [];
+    }
+
+    public function setAbilities(array $abilities = null): void
+    {
+        if ($abilities)
+            $this->abilities = implode(',', $abilities);
     }
 
     public function addAbility(string $ability): void
