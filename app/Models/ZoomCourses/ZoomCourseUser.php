@@ -2,6 +2,7 @@
 
 namespace App\Models\ZoomCourses;
 
+use App\Models\EnrolledStudents\EnrolledStudentForZoomCourse;
 use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,8 +33,8 @@ class ZoomCourseUser extends Model
         'password', 'remember_token',
     ];
 
-    public function info()
+    public function courses()
     {
-        return $this->hasOne(ZoomCourseUserInfo::class, 'live_course_user_id', 'id');
+        return $this->belongsToMany(ZoomCourse::class, EnrolledStudentForZoomCourse::class, 'live_course_user_id');
     }
 }

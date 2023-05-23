@@ -11,16 +11,50 @@ class Admin extends Authenticatable
 {
     use Notifiable, NameHandler, HasApiTokens;
 
+    /*** START ABILITIES ***/
     const ABILITIES_AVAILABLE = [
+        // admins
         'admins:index',
         'admins:update',
         'admins:create',
         'admins:delete',
+        //recorded courses students
+        'students:recordedCourses:index',
+        'students:recordedCourses:update',
+        'students:recordedCourses:create',
+        'students:recordedCourses:delete',
+        //IELTS courses students
+        'students:IELTSCourses:index',
+        'students:IELTSCourses:update',
+        'students:IELTSCourses:create',
+        'students:IELTSCourses:delete',
+        //Zoom courses students
+        'students:ZoomCourses:index',
+        'students:ZoomCourses:update',
+        'students:ZoomCourses:create',
+        'students:ZoomCourses:delete',
     ];
-    const ABILITIES_USERS_ADMINS_INDEX = 'admins:index';
-    const ABILITIES_USERS_ADMINS_UPDATE = 'admins:update';
-    const ABILITIES_USERS_ADMINS_CREATE = 'admins:create';
-    const ABILITIES_USERS_ADMINS_DELETE = 'admins:delete';
+    // admins
+    CONST ABILITIES_USERS_ADMINS_INDEX  = 'admins:index';
+    CONST ABILITIES_USERS_ADMINS_UPDATE = 'admins:update';
+    CONST ABILITIES_USERS_ADMINS_CREATE = 'admins:create';
+    CONST ABILITIES_USERS_ADMINS_DELETE = 'admins:delete';
+    //recorded courses students
+    CONST ABILITIES_USERS_STUDENTS_RECORDED_COURSES_INDEX   = 'students:recordedCourses:index';
+    CONST ABILITIES_USERS_STUDENTS_RECORDED_COURSES_UPDATE  = 'students:recordedCourses:update';
+    CONST ABILITIES_USERS_STUDENTS_RECORDED_COURSES_CREATE  = 'students:recordedCourses:create';
+    CONST ABILITIES_USERS_STUDENTS_RECORDED_COURSES_DELETE  = 'students:recordedCourses:delete';
+    //IELTS courses students
+    CONST ABILITIES_USERS_STUDENTS_IELTS_COURSES_INDEX  = 'students:IELTSCourses:index';
+    CONST ABILITIES_USERS_STUDENTS_IELTS_COURSES_UPDATE = 'students:IELTSCourses:update';
+    CONST ABILITIES_USERS_STUDENTS_IELTS_COURSES_CREATE = 'students:IELTSCourses:create';
+    CONST ABILITIES_USERS_STUDENTS_IELTS_COURSES_DELETE = 'students:IELTSCourses:delete';
+    //Zoom courses students
+    CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_INDEX   = 'students:ZoomCourses:index';
+    CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_UPDATE  = 'students:ZoomCourses:update';
+    CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_CREATE  = 'students:ZoomCourses:create';
+    CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_DELETE  = 'students:ZoomCourses:delete';
+    /*** END OF ABILITIES ***/
 
     protected $table = 'admin';
 

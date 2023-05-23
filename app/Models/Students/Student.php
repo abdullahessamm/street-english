@@ -2,7 +2,8 @@
 
 namespace App\Models\Students;
 
-use App\Models\EnrolledStudents\EnrolledStudentForOnlineCourse;
+use App\Models\Courses\Course;
+use App\Models\EnrolledStudents\EnrolledStudentForCourse;
 use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,15 +14,20 @@ class Student extends Model
     protected $table = 'users';
     
     protected $fillable = [
-        'name', 'email', 'password', 'image', 'gender', 'phone'
+        'name',
+        'email',
+        'password',
+        'image',
+        'gender',
+        'phone'
     ];
     
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    public function course()
+    public function courses()
     {
-        return $this->hasOne(EnrolledStudentForOnlineCourse::class, 'user_id', 'id');
+        return $this->belongsToMany(Course::class, EnrolledStudentForCourse::class, 'user_id');
     }
 }
