@@ -2,6 +2,7 @@
 
 namespace App\Models\Coaches;
 
+use App\Models\Coaches\Blogs\CoachPost;
 use App\Models\Courses\Course;
 use App\Models\Courses\CourseInstructor;
 use App\Models\IETLSCourses\IETLSCourse;
@@ -48,6 +49,11 @@ class Coach extends Model
 
     public function info()
     {
-        return $this->hasOne(CoachInfo::class, 'coach_id', 'id');
+        return $this->hasOne(CoachInfo::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(CoachPost::class);
     }
 }
