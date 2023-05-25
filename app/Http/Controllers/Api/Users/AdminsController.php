@@ -6,13 +6,13 @@ use App\Admin;
 use App\Exceptions\Authorization\UnauthorizedException;
 use App\Exceptions\Models\NotFoundException;
 use App\Exceptions\Validation\DataValidationException;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class AdminsController extends Controller
+class AdminsController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,9 @@ class AdminsController extends Controller
     public function index()
     {
         if (auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_ADMINS_INDEX))
-            return response()->json(Admin::orderBy('created_at', 'DESC')->get());
+            return $this->apiSuccessResponse([
+                'admins' => Admin::orderBy('created_at', 'DESC')->get()
+            ]);
 
         throw new UnauthorizedException();
     }
@@ -63,10 +65,7 @@ class AdminsController extends Controller
         foreach ($request->abilities as $ability) $admin->addAbility($ability);
         $admin->save();
 
-        return response()->json([
-            'success' => true,
-            'user' => $admin
-        ]);
+        return $this->apiSuccessResponse(['user' => $admin]);
     }
 
     /**
@@ -78,10 +77,7 @@ class AdminsController extends Controller
     public function show($id)
     {
         if (auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_ADMINS_INDEX))
-            return response()->json([
-                'success' => true,
-                'admin'   => Admin::find($id),
-            ]);
+            return $this->apiSuccessResponse(['admin'   => Admin::find($id)]);
 
         throw new UnauthorizedException();
     }
@@ -128,7 +124,7 @@ class AdminsController extends Controller
         // save changes
         $admin->save();
 
-        return response()->json(['success' => true]);
+        return $this->apiSuccessResponse();
     }
 
     /**
@@ -146,6 +142,6 @@ class AdminsController extends Controller
 
         Admin::where('id', $id)->delete();
 
-        return response()->json(['success' => true]);
+        return $this->apiSuccessResponse();
     }
 }

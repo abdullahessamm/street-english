@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Users\Students;
 use App\Exceptions\Authorization\UnauthorizedException;
 use App\Exceptions\Models\NotFoundException;
 use App\Exceptions\Validation\DataValidationException;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use App\Models\IETLSCourses\IeltsUser;
 use App\Models\Students\Student;
 use App\Models\ZoomCourses\ZoomCourseUser;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-abstract class StudentController extends Controller {
+abstract class StudentController extends ApiController {
     
     protected string $modelClassName;
     
@@ -39,8 +39,7 @@ abstract class StudentController extends Controller {
         if (! $this->abilities['index'])
             throw new UnauthorizedException();
 
-        return response()->json([
-            'success' => true,
+        return $this->apiSuccessResponse([
             'students' => call_user_func([$this->modelClassName, 'orderBy'], 'created_at', 'DESC')->get(['id', 'name', 'email', 'phone', 'image'])
         ]);
     }
@@ -82,10 +81,7 @@ abstract class StudentController extends Controller {
         $student->phone = $request->phone;
         $student->save(); // save student
 
-        return response()->json([
-            'success' => true,
-            'student' => $student
-        ]);
+        return $this->apiSuccessResponse(['student' => $student]);
     }
 
     /**
@@ -100,8 +96,7 @@ abstract class StudentController extends Controller {
         if (! $this->abilities['show'])
             throw new UnauthorizedException();
 
-            return response()->json([
-                'success' => true,
+            return $this->apiSuccessResponse([
                 'student' => call_user_func(
                         [$this->modelClassName, 'with'],
                         ['courses' => function (BelongsToMany $query) {
@@ -154,7 +149,7 @@ abstract class StudentController extends Controller {
         $student->phone = $request->phone ?? $student->phone;
         $student->save();
         
-        return response()->json(['success' => true]);
+        return $this->apiSuccessResponse();
     }
 
     /**
@@ -169,7 +164,7 @@ abstract class StudentController extends Controller {
             throw new UnauthorizedException();
 
         call_user_func([$this->modelClassName, 'where'], 'id', $id)->delete();
-        return response()->json(['success' => true]);
+        return $this->apiSuccessResponse();
     }
 
     /**
@@ -225,6 +220,6 @@ abstract class StudentController extends Controller {
             $student->save();
         }
 
-        return response()->json(['success' => true]);
+        return $this->apiSuccessResponse();
     }
 }
