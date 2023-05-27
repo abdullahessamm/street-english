@@ -10,7 +10,8 @@ class CoachInfo extends Model
 
     protected $fillable = [
         'coach_id', 
-        'image', 
+        'image',
+        'bio_video',
         'title', 
         'about', 
         'facebook', 

@@ -33,6 +33,11 @@ class Admin extends Authenticatable
         'students:ZoomCourses:update',
         'students:ZoomCourses:create',
         'students:ZoomCourses:delete',
+        // Instructors
+        'instructors:index',
+        'instructors:update',
+        'instructors:create',
+        'instructors:delete',
     ];
     // admins
     CONST ABILITIES_USERS_ADMINS_INDEX  = 'admins:index';
@@ -54,6 +59,11 @@ class Admin extends Authenticatable
     CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_UPDATE  = 'students:ZoomCourses:update';
     CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_CREATE  = 'students:ZoomCourses:create';
     CONST ABILITIES_USERS_STUDENTS_ZOOM_COURSES_DELETE  = 'students:ZoomCourses:delete';
+    //Instructors
+    CONST ABILITIES_USERS_INSTRUCTORS_INDEX   = 'instructors:index';
+    CONST ABILITIES_USERS_INSTRUCTORS_UPDATE  = 'instructors:update';
+    CONST ABILITIES_USERS_INSTRUCTORS_CREATE  = 'instructors:create';
+    CONST ABILITIES_USERS_INSTRUCTORS_DELETE  = 'instructors:delete';
     /*** END OF ABILITIES ***/
 
     protected $table = 'admin';

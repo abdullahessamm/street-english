@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Users\AdminsController;
+use App\Http\Controllers\Api\Users\InstructorsController;
 use Illuminate\Support\Facades\Route;
 
 // admins routes
@@ -11,3 +12,8 @@ Route::prefix('/admins')
 // students routes
 Route::prefix('/students')
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'students' . DIRECTORY_SEPARATOR . 'index.php');
+
+// instructors routes
+Route::prefix('/instructors')
+->controller(InstructorsController::class)
+->group(__DIR__ . DIRECTORY_SEPARATOR . 'instructors.php');
