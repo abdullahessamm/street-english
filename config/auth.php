@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'web:admins',
         'passwords' => 'admins',
     ],
 
@@ -36,9 +36,24 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'web:admins' => [
             'driver' => 'session',
             'provider' => 'admins',
+        ],
+
+        'web:recordedStudent' => [
+            'driver' => 'session',
+            'provider' => 'recordedStudents',
+        ],
+
+        'web:ieltsStudent' => [
+            'driver' => 'session',
+            'provider' => 'ieltsStudents',
+        ],
+
+        'web:zoomStudent' => [
+            'driver' => 'session',
+            'provider' => 'zoomStudents',
         ],
 
         'api' => [
@@ -69,6 +84,21 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Admin::class,
+        ],
+
+        'recordedStudents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Students\Student::class,
+        ],
+
+        'ieltsStudents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\IETLSCourses\IeltsUser::class,
+        ],
+
+        'zoomStudents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\ZoomCourses\ZoomCourseUser::class,
         ],
 
         // 'admins' => [
