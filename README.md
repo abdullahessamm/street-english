@@ -1,1 +1,1 @@
-<h1>Street English - Admin Dashboard</h1>
+<h1>Street English - App</h1>
