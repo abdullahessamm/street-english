@@ -1,2 +1,0 @@
-<link href="https://unpkg.com/survey-core@1.9.34/defaultV2.min.css" type="text/css" rel="stylesheet"/>
-<link href="https://unpkg.com/survey-creator-core@1.9.34/survey-creator-core.min.css" type="text/css" rel="stylesheet"/>
