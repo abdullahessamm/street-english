@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * The controller namespace for the application.
@@ -61,6 +61,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function initRoutes()
     {
+        // production production
         if (config('app.domain') !== 'localhost') {
             Route::domain('api.' . config('app.domain'))
                 ->middleware('api')
@@ -71,22 +72,53 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::domain('ielts.' . config('app.domain'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/ielts.php'));
+
+            Route::domain('zoom.' . config('app.domain'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/zoom.php'));
+
+            Route::domain('recorded.' . config('app.domain'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/recorded.php'));
                 
-        }
+        } 
+        // development env
         else {
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api/index.php'));
-
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
             
             Route::prefix('admin')
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/admin.php'));
+
+                Route::prefix('ielts')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/ielts.php'));
+
+            Route::prefix('zoom')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/zoom.php'));
+
+            Route::prefix('recorded')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/recorded.php'));
         }
+
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 }

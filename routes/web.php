@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\Pages\Courses\CourseController;
 use App\Http\Controllers\Web\Pages\Courses\IETLSCourses\IETLSCourseController;
 use App\Http\Controllers\Web\Pages\Courses\ZoomLiveCourses\ZoomLiveCourseController;
 use App\Http\Controllers\Web\Pages\Ebooks\EbookController;
+use App\Http\Controllers\Web\Pages\VerifyMailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,5 +80,7 @@ Route::post('/ajax/work-with-us/submit', [AppController::class, 'submitWorkWithU
 Route::post('/ajax/subscribe', 'AppController@subscribe')->name('ajax.subscribe');
 /* End Other Pages */
 
-
 Route::get('/contact', [AppController::class, 'contact'])->name('contact');
+
+Route::get('mail/verify/{token}', [VerifyMailController::class, 'verify'])
+    ->where('token', '^[0-9]+$');

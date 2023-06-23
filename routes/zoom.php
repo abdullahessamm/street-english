@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\Admin\LoginController;
+use App\Http\Controllers\Auth\ZoomStudent\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::view('/', 'admins.app')->name('admin.home')->middleware('auth:web:admins,admins.login');
+Route::view('/', 'zoom-users.app')->name('zoomStudent.home')->middleware('auth:web:zoomStudent,zoomStudent.login');
 
-Route::view('/login', 'admins.auth.login')->middleware('guest:web:admins,admin.home');
+Route::view('/login', 'zoom-users.auth.login')->middleware('guest:web:zoomStudent,zoomStudent.home');
 Route::controller(LoginController::class)->group(function () {
-    Route::post('/login', 'login')->name('admins.login');
-    Route::post('/logout', 'logout')->name('admins.logout');
+    Route::post('/login', 'login')->name('zoomStudent.login');
+    Route::post('/logout', 'logout')->name('zoomStudent.logout');
 });
