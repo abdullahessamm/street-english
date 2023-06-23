@@ -23,10 +23,10 @@
             <div class="top-right pull-right clearfix">
                 <!-- Login Nav -->
                 <ul class="login-nav">
-                    <li><a class="register" href="">Sign Up</a></li>
-                    <li><a class="login" href="">Login</a></li>
-                    <li><a class="login" href="">Zoom Login</a></li>
-                    <li><a class="login" href="">IELTS Login</a></li>
+                    <li><a class="register" href="{{ route('recordedStudent.register') }}">Sign Up</a></li>
+                    <li><a class="login" href="{{ route('recordedStudent.login') }}">Login</a></li>
+                    <li><a class="login" href="{{ route('zoomStudent.login') }}">Zoom Login</a></li>
+                    <li><a class="login" href="{{ route('ieltsStudent.login') }}">IELTS Login</a></li>
                     <li><a href="{{ route('work-with-us') }}">Work With Us</a></li>
                 </ul>
             </div>

@@ -4,11 +4,13 @@ namespace App\Models\IETLSCourses;
 
 use App\Models\EnrolledStudents\EnrolledStudentForIETLSCourse;
 use App\ModelsTraits\Accounts\NameHandler;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class IeltsUser extends Model
+class IeltsUser extends Authenticatable
 {
-    use NameHandler;
+    use NameHandler, Notifiable, HasApiTokens;
 
     protected $table = 'ielts_users';
 

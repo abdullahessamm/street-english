@@ -107,4 +107,8 @@ return [
         ],
     ],
 
+    'verification-mails' => [
+        'redirect' => env('MAIL_VERIFICATION_REDIRECT', config('app.url') . '/verify-mail'),
+    ],
+
 ];

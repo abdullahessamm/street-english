@@ -4,11 +4,13 @@ namespace App\Models\ZoomCourses;
 
 use App\Models\EnrolledStudents\EnrolledStudentForZoomCourse;
 use App\ModelsTraits\Accounts\NameHandler;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class ZoomCourseUser extends Model
+class ZoomCourseUser extends Authenticatable
 {
-    use NameHandler;
+    use NameHandler, Notifiable, HasApiTokens;
 
     protected $table = 'live_course_users';
     /**
