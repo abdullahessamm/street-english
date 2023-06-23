@@ -38,6 +38,21 @@ class Admin extends Authenticatable
         'instructors:update',
         'instructors:create',
         'instructors:delete',
+        // Recorded courses
+        'courses:recorded:index',
+        'courses:recorded:update',
+        'courses:recorded:create',
+        'courses:recorded:delete',
+        // Zoom courses
+        'courses:zoom:index',
+        'courses:zoom:update',
+        'courses:zoom:create',
+        'courses:zoom:delete',
+        // IETLS courses
+        'courses:ietls:index',
+        'courses:ietls:update',
+        'courses:ietls:create',
+        'courses:ietls:delete',
     ];
     // admins
     CONST ABILITIES_USERS_ADMINS_INDEX  = 'admins:index';
@@ -64,6 +79,21 @@ class Admin extends Authenticatable
     CONST ABILITIES_USERS_INSTRUCTORS_UPDATE  = 'instructors:update';
     CONST ABILITIES_USERS_INSTRUCTORS_CREATE  = 'instructors:create';
     CONST ABILITIES_USERS_INSTRUCTORS_DELETE  = 'instructors:delete';
+    // recorded courses
+    CONST ABILITIES_COURSES_RECORDED_INDEX   = 'courses:recorded:index';
+    CONST ABILITIES_COURSES_RECORDED_UPDATE  = 'courses:recorded:update';
+    CONST ABILITIES_COURSES_RECORDED_CREATE  = 'courses:recorded:create';
+    CONST ABILITIES_COURSES_RECORDED_DELETE  = 'courses:recorded:delete';
+    // Zoom courses
+    CONST ABILITIES_COURSES_ZOOM_INDEX   = 'courses:zoom:index';
+    CONST ABILITIES_COURSES_ZOOM_UPDATE  = 'courses:zoom:update';
+    CONST ABILITIES_COURSES_ZOOM_CREATE  = 'courses:zoom:create';
+    CONST ABILITIES_COURSES_ZOOM_DELETE  = 'courses:zoom:delete';
+    // recorded courses
+    CONST ABILITIES_COURSES_IETLS_INDEX   = 'courses:ietls:index';
+    CONST ABILITIES_COURSES_IETLS_UPDATE  = 'courses:ietls:update';
+    CONST ABILITIES_COURSES_IETLS_CREATE  = 'courses:ietls:create';
+    CONST ABILITIES_COURSES_IETLS_DELETE  = 'courses:ietls:delete';
     /*** END OF ABILITIES ***/
 
     protected $table = 'admin';
@@ -132,5 +162,10 @@ class Admin extends Authenticatable
             
             $this->abilities = trim($newAbilities, ',');
         }
+    }
+
+    public function hasAbility(string $ability): bool
+    {
+        return in_array($ability, $this->getAbilities()) || in_array('*', $this->getAbilities());
     }
 }
