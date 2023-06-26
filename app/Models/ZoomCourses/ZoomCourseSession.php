@@ -2,7 +2,6 @@
 
 namespace App\Models\ZoomCourses;
 
-use App\Models\Exams\Exam;
 use App\Models\Exercises\Exercise;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +13,7 @@ class ZoomCourseSession extends Model
         'zoom_course_level_id', 'title', 'description', 'exersice_id', 'slug'
     ];
 
-    public function belongsToZoomCourseLevel()
+    public function level()
     {
         return $this->belongsTo(ZoomCourseLevel::class, 'zoom_course_level_id', 'id');
     }

@@ -2,19 +2,19 @@
 
 // recorded courses students routes
 
-use App\Http\Controllers\Api\Users\Students\IELTSCourseStudentsController;
-use App\Http\Controllers\Api\Users\Students\RecordedCourseStudentsController;
-use App\Http\Controllers\Api\Users\Students\ZoomCourseStudentsController;
+use App\Http\Controllers\Api\Admins\Users\Students\IELTSCourseStudentsController;
+use App\Http\Controllers\Api\Admins\Users\Students\RecordedCourseStudentsController;
+use App\Http\Controllers\Api\Admins\Users\Students\ZoomCourseStudentsController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('recorded-courses')
+Route::prefix('recorded')
 ->controller(RecordedCourseStudentsController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'recordedCourseStudents.php');
 
-Route::prefix('ielts-courses')
+Route::prefix('ielts')
 ->controller(IELTSCourseStudentsController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'ieltsCourseStudents.php');
 
-Route::prefix('zoom-courses')
+Route::prefix('zoom')
 ->controller(ZoomCourseStudentsController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'zoomCourseStudents.php');

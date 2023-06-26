@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Users;
+namespace App\Http\Controllers\Api\Admins\Users;
 
 use App\Admin;
 use App\Exceptions\Authorization\UnauthorizedException;
@@ -14,14 +14,16 @@ use Illuminate\Validation\Rule;
 
 class AdminsController extends ApiController
 {
+    protected Admin $admin;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_ADMINS_INDEX))
+        if (auth('sanctum')->user()->can('index', Admin::class))
             return $this->apiSuccessResponse([
                 'admins' => Admin::orderBy('created_at', 'DESC')->get()
             ]);
@@ -38,7 +40,7 @@ class AdminsController extends ApiController
     public function create(Request $request)
     {
         // check permission
-        if (! auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_ADMINS_CREATE))
+        if (! auth('sanctum')->user()->can('create', Admin::class))
             throw new UnauthorizedException();
 
         // validate data
@@ -76,7 +78,7 @@ class AdminsController extends ApiController
      */
     public function show($id)
     {
-        if (auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_ADMINS_INDEX))
+        if (auth('sanctum')->user()->can('show', Admin::class))
             return $this->apiSuccessResponse(['admin'   => Admin::find($id)]);
 
         throw new UnauthorizedException();
@@ -91,9 +93,7 @@ class AdminsController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        $authUser = auth('sanctum')->user();
-        // check permission
-        if (! $authUser->tokenCan(Admin::ABILITIES_USERS_ADMINS_UPDATE) || $authUser->id == $id)
+        if (! auth('sanctum')->user()->can('update', Admin::class) || auth('sanctum')->user()->id == $id)
             throw new UnauthorizedException();
 
         // validate data
@@ -135,9 +135,7 @@ class AdminsController extends ApiController
      */
     public function destroy($id)
     {
-        $authUser = auth('sanctum')->user();
-        // check permission
-        if (! $authUser->tokenCan(Admin::ABILITIES_USERS_ADMINS_UPDATE) || $authUser->id == $id)
+        if (! auth('sanctum')->user()->can('delete', Admin::class) || auth('sanctum')->user()->id == $id)
             throw new UnauthorizedException();
 
         Admin::where('id', $id)->delete();

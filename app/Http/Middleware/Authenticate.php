@@ -16,12 +16,18 @@ class Authenticate
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    public function handle($request, Closure $next, $guard, $redirectTo)
+    public function handle($request, Closure $next, $guard, $redirectTo=null)
     {
         if (auth($guard)->check())
             return $next($request);
 
-        return redirect(route($redirectTo));
+        if ($request->wantsJson())
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated',
+            ], 401);
+        
+        return redirect(route($redirectTo ?? 'index'));
     }
 
 }

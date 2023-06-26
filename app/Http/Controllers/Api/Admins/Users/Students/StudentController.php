@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Users\Students;
+namespace App\Http\Controllers\Api\Admins\Users\Students;
 
 use App\Exceptions\Authorization\UnauthorizedException;
 use App\Exceptions\Models\NotFoundException;

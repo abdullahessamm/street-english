@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Users\AdminsController;
-use App\Http\Controllers\Api\Users\InstructorsController;
+use App\Http\Controllers\Api\Admins\Users\AdminsController;
+use App\Http\Controllers\Api\Admins\Users\InstructorsController;
 use Illuminate\Support\Facades\Route;
 
 // admins routes

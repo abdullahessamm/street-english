@@ -17,7 +17,7 @@ class CreateCoursesTable extends Migration
             $table->engine = 'InnoDB';
             
             $table->id();
-            $table->unsignedBigInteger('course_category_id');
+            $table->unsignedBigInteger('course_category_id')->nullable();
             $table->string('name');
             $table->string('duration');
             $table->string('level');
@@ -37,7 +37,7 @@ class CreateCoursesTable extends Migration
             ->references('id')
             ->on('course_categories')
             ->onUpdate('cascade')
-            ->onDelete('cascade');
+            ->onDelete('set null');
 
             $table->timestamps();
 

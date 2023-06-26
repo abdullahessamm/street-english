@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Users;
+namespace App\Http\Controllers\Api\Admins\Users;
 
 use App\Admin;
 use App\Exceptions\Authorization\UnauthorizedException;
@@ -8,9 +8,12 @@ use App\Exceptions\Models\NotFoundException;
 use App\Exceptions\Validation\DataValidationException;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\Coaches\Coach as Instructor;
+use App\Models\Coaches\Coach;
+use App\Utils\GoogleDriveHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -23,7 +26,7 @@ class InstructorsController extends ApiController
      */
     public function index()
     {
-        if (auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_INDEX))
+        if (auth('sanctum')->user()->can('index', Coach::class))
             return $this->apiSuccessResponse([
                 'instructors' => Instructor::with('info')->get()
             ]);
@@ -40,7 +43,7 @@ class InstructorsController extends ApiController
     public function store(Request $request)
     {
         // check ability
-        if (! auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_CREATE))
+        if (! auth('sanctum')->user()->can('create', Coach::class))
             throw new UnauthorizedException();
 
         // validate request
@@ -89,7 +92,7 @@ class InstructorsController extends ApiController
      */
     public function show($id)
     {
-        if (auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_INDEX))
+        if (auth('sanctum')->user()->can('index', Coach::class))
             return $this->apiSuccessResponse([
                 'instructor' => Instructor::with([
                     'info', 'ieltsCourses', 'recordedCourses', 'zoomCourses'
@@ -109,7 +112,7 @@ class InstructorsController extends ApiController
     public function update(Request $request, $id)
     {
         // check ability
-        if (! auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_UPDATE))
+        if (! auth('sanctum')->user()->can('update', Coach::class))
             throw new UnauthorizedException();
 
         // search for instructor and throw exception if not foud
@@ -160,7 +163,7 @@ class InstructorsController extends ApiController
     public function destroy($id)
     {
         // check ability
-        if (! auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_DELETE))
+        if (! auth('sanctum')->user()->can('delete', Coach::class))
             throw new UnauthorizedException();
 
         Instructor::where('id', $id)->delete(); // delete instructor
@@ -177,7 +180,7 @@ class InstructorsController extends ApiController
     public function updateProfilePic(Request $request, $id)
     {
         // check ability
-        if (! auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_UPDATE))
+        if (! auth('sanctum')->user()->can('update', Coach::class))
             throw new UnauthorizedException();
 
         // search for instructor & throw NotfoundException if not found
@@ -199,11 +202,12 @@ class InstructorsController extends ApiController
         return $this->apiSuccessResponse();
 
         // default path to instructor image directory
-        $pathToImageDir = $this->getUniversalPath('/public/images/instructors/' . $instructor->id);
+        $imageUri = 'public/storage/images/instructors/' . $instructor->id;
+        $pathToImageDir = $this->getUniversalPath($imageUri);
 
         // delete current instructor image if exists
         if ($instructor->info->image) {
-            File::delete($pathToImageDir.DIRECTORY_SEPARATOR.$instructor->info->image);
+            File::delete($this->getUniversalPath($instructor->info->image));
             $instructor->info->image = null;
         }
 
@@ -211,7 +215,7 @@ class InstructorsController extends ApiController
         if ($request->has('image')) {
             $fileName = Str::random(50) . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move($pathToImageDir, $fileName);
-            $instructor->info->image = $fileName;
+            $instructor->info->image = "$imageUri/$fileName";
         }
 
         $instructor->info->save(); // save update to database.
@@ -229,7 +233,7 @@ class InstructorsController extends ApiController
     public function updateBioVideo(Request $request, $id)
     {
         // check ability
-        if (! auth('sanctum')->user()->tokenCan(Admin::ABILITIES_USERS_INSTRUCTORS_UPDATE))
+        if (! auth('sanctum')->user()->can('update', Coach::class))
             throw new UnauthorizedException();
 
         // search for instructor & throw NotfoundException if not found
@@ -250,20 +254,19 @@ class InstructorsController extends ApiController
         if (! $request->has('video') && ! $instructor->info->bio_video)
             return $this->apiSuccessResponse();
 
-        // default path to instructor video directory
-        $pathToVideoDir = $this->getUniversalPath('/public/videos/instructors/' . $instructor->id);
-
         // delete current instructor video if exists
         if ($instructor->info->bio_video) {
-            File::delete($pathToVideoDir.DIRECTORY_SEPARATOR.$instructor->info->bio_video);
+            Storage::disk('google')->delete($instructor->info->bio_video);
             $instructor->info->bio_video = null;
         }
         
         // store the new video if video has been sent
         if ($request->has('video')) {
+            $dir = GoogleDriveHelpers::createDirIfNotExists('instructors');
             $fileName = Str::random(50) . '.' . $request->file('video')->getClientOriginalExtension();
-            $request->file('video')->move($pathToVideoDir, $fileName);
-            $instructor->info->bio_video = $fileName;
+            $fullPath = $dir['path'] . '/' . $fileName;
+            Storage::disk('google')->putStream($fullPath, fopen($request->file('video')->getRealPath(), 'rb'));
+            $instructor->info->bio_video = Storage::disk('google')->getMetaData($fullPath)['path'];
         }
 
         $instructor->info->save(); //save update to database.

@@ -49,10 +49,10 @@ class Admin extends Authenticatable
         'courses:zoom:create',
         'courses:zoom:delete',
         // IETLS courses
-        'courses:ietls:index',
-        'courses:ietls:update',
-        'courses:ietls:create',
-        'courses:ietls:delete',
+        'courses:ielts:index',
+        'courses:ielts:update',
+        'courses:ielts:create',
+        'courses:ielts:delete',
     ];
     // admins
     CONST ABILITIES_USERS_ADMINS_INDEX  = 'admins:index';
@@ -89,11 +89,11 @@ class Admin extends Authenticatable
     CONST ABILITIES_COURSES_ZOOM_UPDATE  = 'courses:zoom:update';
     CONST ABILITIES_COURSES_ZOOM_CREATE  = 'courses:zoom:create';
     CONST ABILITIES_COURSES_ZOOM_DELETE  = 'courses:zoom:delete';
-    // recorded courses
-    CONST ABILITIES_COURSES_IETLS_INDEX   = 'courses:ietls:index';
-    CONST ABILITIES_COURSES_IETLS_UPDATE  = 'courses:ietls:update';
-    CONST ABILITIES_COURSES_IETLS_CREATE  = 'courses:ietls:create';
-    CONST ABILITIES_COURSES_IETLS_DELETE  = 'courses:ietls:delete';
+    // IELTS courses
+    CONST ABILITIES_COURSES_IELTS_INDEX   = 'courses:ielts:index';
+    CONST ABILITIES_COURSES_IELTS_UPDATE  = 'courses:ielts:update';
+    CONST ABILITIES_COURSES_IELTS_CREATE  = 'courses:ielts:create';
+    CONST ABILITIES_COURSES_IELTS_DELETE  = 'courses:ielts:delete';
     /*** END OF ABILITIES ***/
 
     protected $table = 'admin';

@@ -13,13 +13,8 @@ class IETLSCourseCategory extends Model
         'category_name', 'slug'
     ];
 
-    public function onlineCourses()
+    public function courses()
     {
-        return $this->hasMany(IETLSCourse::class, 'Ietls_course_id', 'id');
-    }
-
-    public function onlineCourse()
-    {
-        return $this->hasOne(IETLSCourse::class, 'Ietls_course_id', 'id');
+        return $this->hasMany(IETLSCourse::class, 'Ietls_course_category_id', 'id');
     }
 }

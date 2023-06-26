@@ -59,7 +59,7 @@ return [
 
     'main_url' => env('APP_MAIN_URL', null),
 
-    'main_path' => env('APP_MAIN_PATH', null),
+    'main_path' => env('APP_MAIN_PATH', base_path()),
 
     'domain' => env('APP_DOMAIN', null),
 
@@ -237,8 +237,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'ApiToken' => App\Models\ApiToken::class
-        
+        'ApiToken' => App\Models\ApiToken::class,
+        'GoogleHelpers' => App\Utils\GoogleDriveHelpers::class,
     ],
 
 ];

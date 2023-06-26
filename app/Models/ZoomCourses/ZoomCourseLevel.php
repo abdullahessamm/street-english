@@ -12,7 +12,7 @@ class ZoomCourseLevel extends Model
         'zoom_course_id', 'title', 'description', 'private_price', 'group_price', 'slug'
     ];
 
-    public function belongsToZoomCourse()
+    public function course()
     {
         return $this->belongsTo(ZoomCourse::class, 'zoom_course_id', 'id');
     }
@@ -22,8 +22,9 @@ class ZoomCourseLevel extends Model
         return $this->hasMany(ZoomCourseSession::class, 'zoom_course_level_id', 'id');
     }
 
-    public function users()
+    public function students()
     {
-        return $this->hasMany(ZoomCourseLevelUser::class, 'zoom_course_level_id', 'id');
+        return $this
+        ->belongsToMany(ZoomCourseUser::class, ZoomCourseLevelUser::class, 'zoom_course_level_id', 'enrolled_for_zoom_course_id');
     }
 }
