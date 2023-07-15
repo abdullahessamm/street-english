@@ -12,7 +12,21 @@ class Course extends Model
     protected $table = 'courses';
 
     protected $fillable = [
-        'course_category_id', 'name', 'duration', 'level', 'language', 'price', 'discount', 'media_intro', 'video_url', 'image', 'banner', 'thumbnail', 'description', 'isPublished', 'slug'
+        'course_category_id',
+        'name',
+        'duration',
+        'level',
+        'language',
+        'price',
+        'discount',
+        'media_intro',
+        'video_url',
+        'image',
+        'banner',
+        'thumbnail',
+        'description',
+        'isPublished',
+        'slug'
     ];
 
     public function instructors()

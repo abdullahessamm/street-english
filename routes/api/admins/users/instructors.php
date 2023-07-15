@@ -24,6 +24,10 @@ Route::post('{id}/media/profile-pic', 'updateProfilePic')
 ->where('id', '^[0-9]+$')
 ->name('instructors.updateProfilePic');
 
+Route::get('{id}/media/bio-video', 'downloadBioVideo')
+->where('id', '^[0-9]+$')
+->name('instructors.downloadBioVideo');
+
 Route::post('{id}/media/bio-video', 'updateBioVideo')
 ->where('id', '^[0-9]+$')
 ->name('instructors.updateBioVideo');

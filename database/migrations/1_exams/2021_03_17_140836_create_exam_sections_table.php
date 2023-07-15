@@ -17,15 +17,8 @@ class CreateExamSectionsTable extends Migration
             $table->engine = 'InnoDB';
             
             $table->id();
-            $table->unsignedBigInteger('exam_id');
-            $table->string('section_name');
-            $table->string('score')->nullable();
-
-            $table->foreign('exam_id')
-            ->references('id')
-            ->on('exams')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+            $table->string('title')->nullable();
+            $table->float('score', 5, 2);
             $table->timestamps();
         });
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\AdminDashboard\Exams;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PaginationRequest extends FormRequest
+class CreateExamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class PaginationRequest extends FormRequest
     public function rules()
     {
         return [
-            'per_page' => ['nullable', 'numeric'],
-            'page' => ['nullable', 'required_with:per_page', 'numeric'],
-            'search' => ['string', 'max:255']
+            'name' => ['required', 'string', 'min:2', 'max:50'],
+            'full_mark' => ['required', 'integer', 'min:1', 'max:255'],
         ];
     }
 }

@@ -187,9 +187,13 @@ abstract class StudentController extends ApiController {
         if (! $student)
             throw new NotFoundException(Student::class, $id);
 
+        // return success response (updated) if there are no changes
+        if (! $student->image && ! $request->has('image'))
+            return $this->apiSuccessResponse();
+
         // validate pic file
         $validator = Validator::make($request->all(), [
-            'image' => 'file|mimes:jpg,jpeg,png,svg'
+            'image' => 'file|mimes:jpg,jpeg,png,svg|max:' . config('media.max_image_size'),
         ]);
 
         if ($validator->fails())
@@ -204,21 +208,24 @@ abstract class StudentController extends ApiController {
             $studentDirName = "ielts-course-users";
 
         // path to stored image
-        $imagePath = $this->getUniversalPath('public/images/' . $studentDirName . '/' .$student->id);
+        $imagePath = $studentDirName . '/' .$student->id;
         
-        if ($request->has('image')) { // update image if request has file
+        // delete current image
+        if ($student->image) {
+            $this->deleteImageFromUrl($student->image);
+            $student->image = null;
+        }
+        
+        // update image if request has file
+        if ($request->has('image')) {
             // file
             $file = $request->file('image');
-            // store image to website public directory
-            $file->move($imagePath , 'student.' . $file->getClientOriginalExtension()); // store image
+            $imageUrl = $this->storeImage($imagePath, $file); // store image
             // save image name in student table
-            $student->image = 'student.' . $file->getClientOriginalExtension();
-            $student->save();
-        } else if ($student->image) { // delete image if exists && request does not has file
-            File::delete($imagePath . DIRECTORY_SEPARATOR . $student->image);
-            $student->image = null;
-            $student->save();
+            $student->image = $imageUrl ?? null;
         }
+
+        $student->save(); // save changes
 
         return $this->apiSuccessResponse();
     }

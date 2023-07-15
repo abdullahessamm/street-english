@@ -23,7 +23,7 @@ class GoogleDriveHelpers {
                 ->toArray();
 
         if (count($matches) > 0)
-            return $matches[0];
+            return collect($matches)->first();
 
         Storage::disk('google')->createDir($dirName);
         return Storage::disk('google')->getMetaData($dirName);

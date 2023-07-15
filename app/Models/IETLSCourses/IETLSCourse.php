@@ -12,7 +12,21 @@ class IETLSCourse extends Model
     protected $table = 'Ietls_courses';
 
     protected $fillable = [
-        'Ietls_course_category_id', 'name', 'duration', 'level', 'language', 'price', 'discount', 'media_intro', 'video_url', 'image', 'banner', 'thumbnail', 'description', 'isPublished', 'slug'
+        'Ietls_course_category_id',
+        'name',
+        'duration',
+        'level',
+        'language',
+        'price',
+        'discount',
+        'media_intro',
+        'video_url',
+        'image',
+        'banner',
+        'thumbnail',
+        'description',
+        'isPublished',
+        'slug'
     ];
 
     public function instructors()

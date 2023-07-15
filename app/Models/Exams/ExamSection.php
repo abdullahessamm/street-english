@@ -2,23 +2,31 @@
 
 namespace App\Models\Exams;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ExamSection extends Model
 {
+    use HasFactory;
+
     protected $table = 'exam_sections';
 
     protected $fillable = [
-        'exam_id', 'section_name'
+        'title', 'score'
     ];
 
-    public function belongsToExam()
+    public function exams()
     {
-        return $this->belongsTo(Exam::class, 'exam_id', 'id');
+        return $this->belongsToMany(Exam::class, ExamSectionPivot::class, 'exam_section_id', 'exam_id');
+    }
+
+    public function header()
+    {
+        return $this->hasOne(ExamSectionHeader::class);
     }
 
     public function questions()
     {
-        return $this->hasMany(ExamQuestion::class, 'section_id', 'id');
+        return $this->hasMany(ExamSectionQuestion::class);
     }
 }

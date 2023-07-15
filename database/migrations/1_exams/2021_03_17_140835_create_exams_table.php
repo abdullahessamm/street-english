@@ -17,17 +17,8 @@ class CreateExamsTable extends Migration
             $table->engine = 'InnoDB';
             
             $table->id();
-            $table->string('exam_name');
-            $table->boolean('take_exam_anytime')->nullable()->default(0);
-            $table->time('exam_hours')->nullable();;
-            $table->string('exam_timezone')->nullable();
-            $table->date('exam_date')->nullable();
-            $table->time('start_at')->nullable();
-            $table->time('end_at')->nullable();
-            $table->string('full_mark')->nullable();
-            $table->string('slug');
-            $table->boolean('publish')->nullable()->default(0);
-            $table->boolean('for_anyone')->default(1);
+            $table->string('name', 50);
+            $table->tinyInteger('full_mark')->unsigned();
             $table->timestamps();
         });
     }

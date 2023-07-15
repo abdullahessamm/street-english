@@ -18,7 +18,7 @@ class Exercise extends Model
         return $this->hasMany(ExerciseQuestion::class, 'exercise_id', 'id');
     }
 
-    public function exerciseUsers()
+    public function users()
     {
         return $this->hasMany(ExerciseUser::class, 'exercise_id', 'id');
     }

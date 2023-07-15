@@ -53,6 +53,11 @@ class Admin extends Authenticatable
         'courses:ielts:update',
         'courses:ielts:create',
         'courses:ielts:delete',
+        // Exams
+        'exams:index',
+        'exams:update',
+        'exams:create',
+        'exams:delete',
     ];
     // admins
     CONST ABILITIES_USERS_ADMINS_INDEX  = 'admins:index';
@@ -94,6 +99,11 @@ class Admin extends Authenticatable
     CONST ABILITIES_COURSES_IELTS_UPDATE  = 'courses:ielts:update';
     CONST ABILITIES_COURSES_IELTS_CREATE  = 'courses:ielts:create';
     CONST ABILITIES_COURSES_IELTS_DELETE  = 'courses:ielts:delete';
+    // Exams
+    CONST ABILITIES_EXAMS_INDEX   = 'exams:index';
+    CONST ABILITIES_EXAMS_UPDATE  = 'exams:update';
+    CONST ABILITIES_EXAMS_CREATE  = 'exams:create';
+    CONST ABILITIES_EXAMS_DELETE  = 'exams:delete';
     /*** END OF ABILITIES ***/
 
     protected $table = 'admin';

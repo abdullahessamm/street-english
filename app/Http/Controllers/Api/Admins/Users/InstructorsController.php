@@ -199,23 +199,18 @@ class InstructorsController extends ApiController
         // if request doesn't contain image and instructor doesn't have saved image
         // then return success response without doing any thing
         if (! $request->has('image') && ! $instructor->info->image)
-        return $this->apiSuccessResponse();
-
-        // default path to instructor image directory
-        $imageUri = 'public/storage/images/instructors/' . $instructor->id;
-        $pathToImageDir = $this->getUniversalPath($imageUri);
+            return $this->apiSuccessResponse();
 
         // delete current instructor image if exists
         if ($instructor->info->image) {
-            File::delete($this->getUniversalPath($instructor->info->image));
+            $this->deleteImageFromUrl($instructor->info->image);
             $instructor->info->image = null;
         }
 
          // store the new image if image has been sent
         if ($request->has('image')) {
-            $fileName = Str::random(50) . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move($pathToImageDir, $fileName);
-            $instructor->info->image = "$imageUri/$fileName";
+            if ($imageUrl = $this->storeImage('instructors/' . $instructor->id, $request->file('image')))
+                $instructor->info->image = $imageUrl;
         }
 
         $instructor->info->save(); // save update to database.
@@ -243,7 +238,7 @@ class InstructorsController extends ApiController
 
         // validate video file
         $validator = Validator::make($request->all(), [
-            'video' => 'file|mimetypes:video/mpeg,video/mp4,video/webm|max:' . config('media.max_image_size'),
+            'video' => 'file|mimetypes:video/mpeg,video/mp4,video/webm|max:' . config('media.max_video_size'),
         ]);
 
         if ($validator->fails())
@@ -261,16 +256,24 @@ class InstructorsController extends ApiController
         }
         
         // store the new video if video has been sent
-        if ($request->has('video')) {
-            $dir = GoogleDriveHelpers::createDirIfNotExists('instructors');
-            $fileName = Str::random(50) . '.' . $request->file('video')->getClientOriginalExtension();
-            $fullPath = $dir['path'] . '/' . $fileName;
-            Storage::disk('google')->putStream($fullPath, fopen($request->file('video')->getRealPath(), 'rb'));
-            $instructor->info->bio_video = Storage::disk('google')->getMetaData($fullPath)['path'];
-        }
+        if ($request->has('video'))
+            $instructor->info->bio_video = $this->storeStreamToGoogle('instructors', $request->file('video'));
 
         $instructor->info->save(); //save update to database.
 
         return $this->apiSuccessResponse();
+    }
+
+    public function downloadBioVideo($id)
+    {
+        $instructor = Coach::with('info')->findOrFail($id, ['id']);
+        $stream = Storage::disk('google')->readStream($instructor->info->bio_video);
+        $filename = Storage::disk('google')->getMetaData($instructor->info->bio_video)['name'];
+        return response()->stream(function () use ($stream) {
+            echo stream_get_contents($stream);
+        }, 200, [
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => 'attachment; filename=' . $filename,
+        ]);
     }
 }

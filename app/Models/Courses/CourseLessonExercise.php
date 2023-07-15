@@ -13,12 +13,12 @@ class CourseLessonExercise extends Model
         'course_lesson_id', 'exam_id', 'title', 'description', 'isRepeatable',
     ];
 
-    public function belongsToCourseLesson()
+    public function lesson()
     {
         return $this->belongsTo(CourseLesson::class, 'course_lesson_id', 'id');
     }
 
-    public function belongsToExam()
+    public function exam()
     {
         return $this->belongsTo(Exam::class, 'exam_id', 'id');
     }

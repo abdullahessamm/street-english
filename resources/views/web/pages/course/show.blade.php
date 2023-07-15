@@ -284,7 +284,7 @@
                 </div>
             </div>
             <form id="loginToBuyCourse">
-                {{ csrf_field() }}
+                @csrf
                 
                 <input type="hidden" name="course_id" value="{{ $course->id }}">
                 <div class="modal-body">
@@ -339,7 +339,7 @@
 </div>
 
 <!-- Buy Course Modal -->
-@if(Auth::check())
+@if(auth('web:recordedStudent')->check())
 <div class="modal fade" id="buyCourseModal" tabindex="-1" role="dialog" aria-labelledby="buyCourseModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -350,9 +350,9 @@
                 </div>
             </div>
             <form id="buyCourse">
-                {{ csrf_field() }}
+                @csrf
                 <input type="hidden" name="course_id" value="{{ $course->id }}">
-                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="user_id" value="{{ auth('web:recordedStudent')->user()->id }}">
                 <div class="modal-body">
                     <div class="jumbotron text-center">
                         <h3>By clicking <small class="bg-success text-light p-2 font-weight-bold">Buy - ${{$course->price}}</small> you will have this course in your dashboard</h3>

@@ -19,10 +19,14 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\IETLSCourses\IeltsUser::class => \App\Policies\Users\IeltsUserPolicy::class,
         \App\Models\ZoomCourses\ZoomCourseUser::class => \App\Policies\Users\ZoomUserPolicy::class,
         \App\Models\Coaches\Coach::class => \App\Policies\Users\InstructorPolicy::class,
+        
         // courses
         \App\Models\Courses\Course::class => \App\Policies\Courses\RecordedCoursesPolicy::class,
         \App\Models\IETLSCourses\IETLSCourse::class => \App\Policies\Courses\IeltsCoursesPolicy::class,
         \App\Models\ZoomCourses\ZoomCourse::class => \App\Policies\Courses\ZoomCoursesPolicy::class,
+        
+        // exams
+        \App\Models\Exams\Exam::class => \App\Policies\ExamPolicy::class,
     ];
 
     /**
