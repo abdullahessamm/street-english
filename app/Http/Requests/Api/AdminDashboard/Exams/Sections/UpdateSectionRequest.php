@@ -15,7 +15,7 @@ class UpdateSectionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,10 +28,10 @@ class UpdateSectionRequest extends FormRequest
         return [
             'title' => ['nullable', 'string', 'min:1', 'max:255'],
             'score' => ['numeric', 'min:0', 'max:999.99'],
+            'has_header' => ['required', 'boolean'],
             // Header
-            'header' => ['array', 'nullable'],
-            'header.title' => ['nullable', 'string', 'min:1', 'max:255'],
-            'header.type' => ['string', Rule::in(ExamSectionHeader::AVAILABLE_TYPES)],
+            'header_title' => ['nullable', 'string', 'min:1', 'max:255'],
+            'header_type' => ['string', Rule::in(ExamSectionHeader::AVAILABLE_TYPES)],
             'header_paragraph' => [
                 'required_if:header_type,' . ExamSectionHeader::TYPE_PARAGRAPH,
                 'string',

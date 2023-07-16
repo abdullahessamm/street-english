@@ -28,9 +28,10 @@ class CreateSectionRequest extends FormRequest
         return [
             'title' => ['nullable', 'string', 'min:1', 'max:255'],
             'score' => ['required', 'numeric', 'min:0', 'max:999.99'],
+            'has_header' => ['required', 'boolean'],
             // Header
             'header_title' => ['nullable', 'string', 'min:1', 'max:255'],
-            'header_type' => ['required', 'string', Rule::in(ExamSectionHeader::AVAILABLE_TYPES)],
+            'header_type' => ['required_if:has_header,true', 'string', Rule::in(ExamSectionHeader::AVAILABLE_TYPES)],
             'header_paragraph' => [
                 'required_if:header_type,' . ExamSectionHeader::TYPE_PARAGRAPH,
                 'string',

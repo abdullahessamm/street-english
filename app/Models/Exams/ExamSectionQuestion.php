@@ -13,14 +13,14 @@ class ExamSectionQuestion extends Model
         'open-ended', 'mcq', 'complete', 'match'
     ];
 
+    CONST TYPE_OPEN_ENDED = 'open-ended';
+    CONST TYPE_MCQ = 'mcq';
+    CONST TYPE_COMPLETE = 'complete';
+    CONST TYPE_MATCH = 'match';
+
     protected $table = 'exam_section_questions';
 
     public $timestamps = false;
-
-    protected $casts = [
-        'content' => 'array',
-        'correct_answer' => 'array',
-    ];
 
     protected $fillable = [
         'exam_section_id',
