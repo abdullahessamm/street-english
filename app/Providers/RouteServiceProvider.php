@@ -71,7 +71,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::domain('admin.' . config('app.domain'))
                 ->middleware('web')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+                ->group(base_path('routes/admin.php'));
 
             Route::domain('ielts.' . config('app.domain'))
                 ->middleware('web')
