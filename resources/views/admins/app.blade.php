@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="logo.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> {{ env('APP_NAME') }} | {{ __('Dashboard') }}</title>
-</head>
-<body>
-    <h3> Welcome to your Dashboard </h3>
-</body>
+    <script type="module" crossorigin src="/assets/admin-dashboard/index-b07e7fbc.js"></script>
+    <link rel="stylesheet" href="/assets/admin-dashboard/index-eb5b4907.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    
+  </body>
 </html>
