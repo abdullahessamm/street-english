@@ -8,7 +8,7 @@ class LoginController extends AbstractLoginController
 {
 
     protected string $loginRedirectRoute = 'admin.home';
-    protected string $logoutRedirectRoute = 'admin.login';
+    protected string $logoutRedirectRoute = 'admins.login';
 
     /**
      * Create a new controller instance.

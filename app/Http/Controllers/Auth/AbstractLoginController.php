@@ -26,11 +26,12 @@ abstract class AbstractLoginController extends Controller
     public function login(Request $req) {
         if ($this->guard->attempt(['email' => $req->email, 'password' => $req->password], true)) {
             $user = $this->guard->user();
-            $token = $user->createToken(get_class($user) . '-' . $user->id . '-web-access');
-            return redirect()->route($this->loginRedirectRoute)->withCookie(cookie('token', $token->plainTextToken, 60*24*365*80, null, config('session.domain'), null, false));
+            $modelName = strtolower(array_reverse(explode('\\', get_class($user)))[0]);
+            $token = $user->createToken($modelName . '-' . $user->id . '-web-access');
+            return redirect()->route($this->loginRedirectRoute)->withCookie(cookie("$modelName-token", $token->plainTextToken, 60*24*365*80, null, config('session.domain'), null, false));
         }
 
-        if (Admin::where('email', $req->email)->first())
+        if ($this->guard->getProvider()->retrieveByCredentials(['email' => $req->email]))
             return back()->withErrors(['password' => 'Wrong password.']);
         else 
             return back()->withErrors(['email' => 'Email not found in our database.']);
@@ -44,12 +45,20 @@ abstract class AbstractLoginController extends Controller
     public function logout(Request $request)
     {
         $this->guard->logout();
-
-        if ($request->hasCookie('token')) {
-            $token = ApiToken::findToken($request->cookie('token'));
-            $token ? $token->delete() : null;
-        }
+        $this->deleteToken($request);
 
         return redirect()->route($this->logoutRedirectRoute)->withCookie(cookie('token', null, 0, null, config('session.domain'), null, false));
+    }
+
+    private function deleteToken(Request $request)
+    {
+        $model = $this->guard->getProvider()->getModel();
+        $modelName = strtolower(array_reverse(explode('\\', $model))[0]);
+
+
+        if ($request->hasCookie("$modelName-token")) {
+            $token = ApiToken::findToken($request->cookie("$modelName-token"));
+            $token ? $token->delete() : null;
+        }
     }
 }

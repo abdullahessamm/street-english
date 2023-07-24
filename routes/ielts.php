@@ -22,5 +22,5 @@ Route::view('/', 'ielts-users.app')->name('ieltsStudent.home')->middleware('auth
 Route::view('/login', 'ielts-users.auth.login')->middleware('guest:web:ieltsStudent,ieltsStudent.home');
 Route::controller(LoginController::class)->group(function () {
     Route::post('/login', 'login')->name('ieltsStudent.login');
-    Route::post('/logout', 'logout')->name('ieltsStudent.logout');
+    Route::get('/logout', 'logout')->name('ieltsStudent.logout');
 });

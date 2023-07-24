@@ -28,7 +28,7 @@ Route::middleware('guest:web:recordedStudent,recordedStudent.home')->group(funct
 
 Route::controller(LoginController::class)->group(function () {
     Route::post('/login', 'login')->name('recordedStudent.login');
-    Route::post('/logout', 'logout')->name('recordedStudent.logout');
+    Route::get('/logout', 'logout')->name('recordedStudent.logout');
     // login with google
     Route::prefix('/login-with-google')->group(function () {
         Route::get('/', 'loginWithGoogleRedirect')->name('recordedStudent.loginWithGoogle');

@@ -12,6 +12,9 @@ class EncryptCookies extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        'token'
+        'admin-token',
+        'student-token',
+        'ieltsuser-token',
+        'zoomcourseuser-token',
     ];
 }

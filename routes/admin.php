@@ -22,5 +22,5 @@ Route::view('/', 'admins.app')->name('admin.home')->middleware('auth:web:admins,
 Route::view('/login', 'admins.auth.login')->middleware('guest:web:admins,admin.home');
 Route::controller(LoginController::class)->group(function () {
     Route::post('/login', 'login')->name('admins.login');
-    Route::post('/logout', 'logout')->name('admins.logout');
+    Route::get('/logout', 'logout')->name('admins.logout');
 });
