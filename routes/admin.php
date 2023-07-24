@@ -16,14 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
-Route::view('/{param?}', 'admins.app')
-->where('param', '.*')
-->name('admin.home')
-->middleware('auth:web:admins,admins.login');
-
 Route::view('/login', 'admins.auth.login')->middleware('guest:web:admins,admin.home');
 Route::controller(LoginController::class)->group(function () {
     Route::post('/login', 'login')->name('admins.login');
     Route::get('/logout', 'logout')->name('admins.logout');
 });
+
+Route::view('/{param?}', 'admins.app')
+->where('param', '.*')
+->name('admin.home')
+->middleware('auth:web:admins,admins.login');
