@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="logo.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {{ env('APP_NAME') }} | {{ __('Dashboard') }}</title>
-    <script type="module" crossorigin src="/assets/admin-dashboard/index-2e16364e.js"></script>
+    <script type="module" crossorigin src="/assets/admin-dashboard/index-2ff07988.js"></script>
     <link rel="stylesheet" href="/assets/admin-dashboard/index-eb5b4907.css">
   </head>
   <body>
