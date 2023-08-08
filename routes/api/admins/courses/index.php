@@ -7,7 +7,7 @@ Route::prefix('recorded')
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'recorded' . DIRECTORY_SEPARATOR . 'index.php');
 
 // ielts
-Route::prefix('ielts')
+Route::prefix('ietls')
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'ielts' . DIRECTORY_SEPARATOR . 'index.php');
 
 // zoom

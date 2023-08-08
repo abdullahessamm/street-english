@@ -13,6 +13,8 @@ class Admin extends Authenticatable
 
     /*** START ABILITIES ***/
     const ABILITIES_AVAILABLE = [
+        // statistics
+        'statistics:plots',
         // admins
         'admins:index',
         'admins:update',
@@ -59,6 +61,8 @@ class Admin extends Authenticatable
         'exams:create',
         'exams:delete',
     ];
+    // statistics
+    CONST ABILITIES_STATISTICS_PLOTS = 'statistics:plots';
     // admins
     CONST ABILITIES_USERS_ADMINS_INDEX  = 'admins:index';
     CONST ABILITIES_USERS_ADMINS_UPDATE = 'admins:update';

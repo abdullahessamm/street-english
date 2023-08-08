@@ -35,7 +35,11 @@ class Student extends Authenticatable
     ];
     
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'email_verify_token',
+        'email_verify_token_expires_at',
+        'google_id',
     ];
 
     public function courses()

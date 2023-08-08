@@ -47,10 +47,18 @@ abstract class CategoryController extends ApiController
      */
     public function store(CategoryRequest $request)
     {
-        $this->checkAbilities('create');
+        $this->checkAbilities('update');
 
-        $this->categoryModel->create($request->validated());
-        return $this->apiSuccessResponse();
+        $data = $request->validated();
+        $data['slug'] = $data['category_name'];
+
+        $category = $this->categoryModel->updateOrCreate([
+            'category_name' => $data['category_name']
+        ], $data);
+
+        return $this->apiSuccessResponse([
+            'category' => $category
+        ]);
     }
 
     /**
@@ -93,7 +101,7 @@ abstract class CategoryController extends ApiController
      */
     public function destroy($id)
     {
-        $this->checkAbilities('delete');
+        $this->checkAbilities('update');
         
         $this->categoryModel->where('id', $id)->delete();
         return $this->apiSuccessResponse();

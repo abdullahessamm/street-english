@@ -28,7 +28,7 @@ class InstructorsController extends ApiController
     {
         if (auth('sanctum')->user()->can('index', Coach::class))
             return $this->apiSuccessResponse([
-                'instructors' => Instructor::with('info')->get()
+                'instructors' => Instructor::with('info')->orderBy('created_at', 'DESC')->get()
             ]);
 
         throw new UnauthorizedException();
@@ -62,7 +62,7 @@ class InstructorsController extends ApiController
         ]);
 
         if ($validator->fails())
-            throw new DataValidationException($validator->errors()->all());
+            throw new DataValidationException($validator->errors()->toArray());
 
         // create instructor
         $instructor = new Instructor($request->only([

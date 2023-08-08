@@ -11,7 +11,7 @@ Route::prefix('recorded')
 ->controller(RecordedCourseStudentsController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'recordedCourseStudents.php');
 
-Route::prefix('ielts')
+Route::prefix('ietls')
 ->controller(IELTSCourseStudentsController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'ieltsCourseStudents.php');
 

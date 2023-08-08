@@ -40,7 +40,7 @@ abstract class StudentController extends ApiController {
             throw new UnauthorizedException();
 
         return $this->apiSuccessResponse([
-            'students' => call_user_func([$this->modelClassName, 'orderBy'], 'created_at', 'DESC')->get(['id', 'name', 'email', 'phone', 'image'])
+            'students' => call_user_func([$this->modelClassName, 'orderBy'], 'created_at', 'DESC')->get()
         ]);
     }
 
