@@ -66,7 +66,7 @@ abstract class StudentController extends ApiController {
             'email'         => 'required|email|max:50|unique:' . $tableName . ',email',
             'password'      => 'required|min:8|max:80|string',
             'gender'        => 'required|in:male,female',
-            'phone'         => 'regex:/^[0-9]{7,16}$/|unique:' . $tableName . ',phone',
+            'phone'         => 'nullable|regex:/^[0-9]{7,16}$/|unique:' . $tableName . ',phone',
         ]);
 
         if ($validator->fails())
