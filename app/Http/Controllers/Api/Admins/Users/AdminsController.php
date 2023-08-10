@@ -78,7 +78,7 @@ class AdminsController extends ApiController
      */
     public function show($id)
     {
-        if (auth('sanctum')->user()->can('show', Admin::class))
+        if (auth('sanctum')->user()->can('index', Admin::class))
             return $this->apiSuccessResponse(['admin'   => Admin::find($id)]);
 
         throw new UnauthorizedException();
