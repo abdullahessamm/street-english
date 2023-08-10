@@ -70,7 +70,7 @@ abstract class StudentController extends ApiController {
         ]);
 
         if ($validator->fails())
-            throw new DataValidationException($validator->errors()->all());
+            throw new DataValidationException($validator->errors()->toArray());
 
         // create new recorded course student
         $student = new $this->modelClassName;
