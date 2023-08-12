@@ -136,7 +136,7 @@ class InstructorsController extends ApiController
         ]);
 
         if ($validator->fails())
-            throw new DataValidationException($validator->errors()->all());
+            throw new DataValidationException($validator->errors()->toArray());
 
         // update instructor & his info
         $instructor->updateName($request->f_name, $request->l_name);
