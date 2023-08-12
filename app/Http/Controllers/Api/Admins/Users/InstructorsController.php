@@ -266,14 +266,23 @@ class InstructorsController extends ApiController
 
     public function downloadBioVideo($id)
     {
+        if (! auth('sanctum')->user()->can('index', Coach::class))
+            throw new UnauthorizedException();
+
         $instructor = Coach::with('info')->findOrFail($id, ['id']);
+
+        if (! $instructor->info->bio_video)
+            throw new NotFoundException(Instructor::class, 'bio video');
+
         $stream = Storage::disk('google')->readStream($instructor->info->bio_video);
-        $filename = Storage::disk('google')->getMetaData($instructor->info->bio_video)['name'];
+        $metaData = Storage::disk('google')->getMetaData($instructor->info->bio_video);
+        
         return response()->stream(function () use ($stream) {
             echo stream_get_contents($stream);
         }, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename=' . $filename,
+            'Content-Type' => $metaData['mimetype'],
+            'Content-Length' => $metaData['size'],
+            'Content-Disposition' => 'attachment; filename=' . $metaData['name'],
         ]);
     }
 }
