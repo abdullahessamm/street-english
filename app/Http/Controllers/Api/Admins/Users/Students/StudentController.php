@@ -139,7 +139,7 @@ abstract class StudentController extends ApiController {
         ]);
 
         if ($validator->fails())
-            throw new DataValidationException($validator->errors()->all());
+            throw new DataValidationException($validator->errors()->toArray());
 
         // update student data
         $student->updateName($request->f_name, $request->l_name);
