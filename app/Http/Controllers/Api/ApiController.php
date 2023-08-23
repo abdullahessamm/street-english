@@ -8,6 +8,7 @@ use App\Utils\GoogleDriveHelpers;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Iman\Streamer\VideoStreamer;
 
 abstract class ApiController extends Controller
 {
@@ -54,5 +55,17 @@ abstract class ApiController extends Controller
         $fullPath = $dir['path'] . '/' . $fileName;
         Storage::disk('google')->putStream($fullPath, fopen($stream->getRealPath(), 'rb'));
         return Storage::disk('google')->getMetaData($fullPath)['path'];
+    }
+
+    protected function videoStreamResponse($stream)
+    {
+        $tmpFileName = tempnam(sys_get_temp_dir(), 'vid');
+        $tmpFile = fopen($tmpFileName, 'wb');
+        fwrite($tmpFile, stream_get_contents($stream));
+        fclose($tmpFile);
+
+        return response()->stream(function () use ($tmpFileName) {
+            VideoStreamer::streamFile($tmpFileName);
+        });
     }
 }

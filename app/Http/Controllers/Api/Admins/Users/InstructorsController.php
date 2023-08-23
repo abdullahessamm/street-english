@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Iman\Streamer\VideoStreamer;
 
 class InstructorsController extends ApiController
 {
@@ -274,15 +275,13 @@ class InstructorsController extends ApiController
         if (! $instructor->info->bio_video)
             throw new NotFoundException(Instructor::class, 'bio video');
 
+        if (request()->has('meta_data'))
+            return $this->apiSuccessResponse([
+                'meta_data' => Storage::disk('google')->getMetaData($instructor->info->bio_video)
+            ]);
+
         $stream = Storage::disk('google')->readStream($instructor->info->bio_video);
-        $metaData = Storage::disk('google')->getMetaData($instructor->info->bio_video);
         
-        return response()->stream(function () use ($stream) {
-            echo stream_get_contents($stream);
-        }, 200, [
-            'Content-Type' => $metaData['mimetype'],
-            'Content-Length' => $metaData['size'],
-            'Content-Disposition' => 'attachment; filename=' . $metaData['name'],
-        ]);
+        return $this->videoStreamResponse($stream);
     }
 }
