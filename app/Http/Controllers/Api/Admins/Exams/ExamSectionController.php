@@ -33,6 +33,7 @@ class ExamSectionController extends ApiController
             'sections' => ExamSection::with([
                 'questions',
                 'header',
+                'exams:name'
             ])
             ->orderBy('created_at', 'DESC')
             ->paginate($paginateQueries->get('per_page'), ['*'], null, $paginateQueries->get('page'))
@@ -126,18 +127,22 @@ class ExamSectionController extends ApiController
         $section = ExamSection::with('header')->findOrFail($id);
 
         $stream = null;
+        $metaData = [];
 
         switch ($section->header->type) {
             case ExamSectionHeader::TYPE_PICTURE:
                 $stream = Storage::disk('google')->readStream($section->header->picture);
+                $metaData = Storage::disk('google')->getMetaData($section->header->picture);
                 break;
             
             case ExamSectionHeader::TYPE_AUDIO:
                 $stream = Storage::disk('google')->readStream($section->header->audio);
+                $metaData = Storage::disk('google')->getMetaData($section->header->audio);
                 break;
 
             case ExamSectionHeader::TYPE_VIDEO:
                 $stream = Storage::disk('google')->readStream($section->header->video);
+                $metaData = Storage::disk('google')->getMetaData($section->header->video);
                 break;
 
             default:
@@ -151,6 +156,7 @@ class ExamSectionController extends ApiController
             echo stream_get_contents($stream);
         }, 200, [
             'Content-Type' => 'application/octet-stream',
+            'Content-Length' => $metaData['size']
         ]);
     }
 
