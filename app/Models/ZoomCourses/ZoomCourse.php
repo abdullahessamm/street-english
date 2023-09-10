@@ -11,7 +11,15 @@ class ZoomCourse extends Model
     protected $table = 'zoom_courses';
 
     protected $fillable = [
-        'title', 'image', 'description', 'private_price', 'group_price', 'isPublished', 'slug'
+        'title',
+        'image',
+        'description',
+        'private_price',
+        'private_price_per_level',
+        'group_price',
+        'group_price_per_level',
+        'isPublished',
+        'slug'
     ];
 
     public function levels()

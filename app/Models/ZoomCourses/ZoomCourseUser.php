@@ -2,7 +2,6 @@
 
 namespace App\Models\ZoomCourses;
 
-use App\Models\EnrolledStudents\EnrolledStudentForZoomCourse;
 use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,8 +34,29 @@ class ZoomCourseUser extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function courses()
+    public function privates()
     {
-        return $this->belongsToMany(ZoomCourse::class, EnrolledStudentForZoomCourse::class, 'live_course_user_id');
+        return $this->hasMany(ZoomCourseLevelPrivate::class, 'live_course_user_id', 'id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(ZoomCourseLevelGroup::class, ZoomCourseLevelGroupsUsersPivot::class, 'live_course_user_id', 'group_id')
+        ->withPivot('joined_at');
+    }
+
+    public function sessionsReports()
+    {
+        return $this->hasMany(ZoomCourseSessionReport::class, 'student_id', 'id');
+    }
+
+    public function levelsReports()
+    {
+        return $this->hasMany(ZoomCourseLevelReport::class, 'student_id', 'id');
+    }
+
+    public function solvedSessionsExercises()
+    {
+        return $this->hasMany(ZoomCourseSessionStudentExercise::class, 'student_id', 'id');
     }
 }

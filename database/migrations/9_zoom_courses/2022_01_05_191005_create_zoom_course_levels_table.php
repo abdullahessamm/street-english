@@ -20,8 +20,6 @@ class CreateZoomCourseLevelsTable extends Migration
             $table->unsignedBigInteger('zoom_course_id');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('private_price')->nullable();
-            $table->string('group_price')->nullable();
             $table->string('slug')->nullable();
 
             $table->foreign('zoom_course_id')

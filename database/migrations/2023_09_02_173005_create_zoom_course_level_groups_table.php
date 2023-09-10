@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateZoomCourseSessionsTable extends Migration
+class CreateZoomCourseLevelGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,24 @@ class CreateZoomCourseSessionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('zoom_course_sessions', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-
+        Schema::create('zoom_course_level_groups', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('zoom_course_level_id');
-            $table->string('title');
-            $table->text('description')->nullable();
+            $table->string('name', 80);
+            $table->unsignedBigInteger('instructor_id')->nullable();
+            $table->timestamps();
 
             $table->foreign('zoom_course_level_id')
             ->references('id')
             ->on('zoom_course_levels')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
 
-            $table->timestamps();
+            $table->foreign('instructor_id')
+            ->references('id')
+            ->on('coaches')
+            ->onDelete('set null')
+            ->onUpdate('set null');
         });
     }
 
@@ -38,6 +41,6 @@ class CreateZoomCourseSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zoom_course_sessions');
+        Schema::dropIfExists('zoom_course_level_groups');
     }
 }

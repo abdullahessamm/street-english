@@ -9,7 +9,10 @@ class ZoomCourseLevel extends Model
     protected $table = 'zoom_course_levels';
 
     protected $fillable = [
-        'zoom_course_id', 'title', 'description', 'private_price', 'group_price', 'slug'
+        'zoom_course_id',
+        'title',
+        'description',
+        'slug'
     ];
 
     public function course()
@@ -17,14 +20,18 @@ class ZoomCourseLevel extends Model
         return $this->belongsTo(ZoomCourse::class, 'zoom_course_id', 'id');
     }
 
-    public function sessions()
+    public function groups()
     {
-        return $this->hasMany(ZoomCourseSession::class, 'zoom_course_level_id', 'id');
+        return $this->hasMany(ZoomCourseLevelGroup::class, 'zoom_course_level_id', 'id');
     }
 
-    public function students()
+    public function privates()
     {
-        return $this
-        ->belongsToMany(ZoomCourseUser::class, ZoomCourseLevelUser::class, 'zoom_course_level_id', 'enrolled_for_zoom_course_id');
+        return $this->hasMany(ZoomCourseLevelPrivate::class, 'zoom_course_level_id', 'id');
+    }
+
+    public function exam()
+    {
+        return $this->hasOne(ZoomCourseLevelExam::class, 'level_id', 'id');
     }
 }
