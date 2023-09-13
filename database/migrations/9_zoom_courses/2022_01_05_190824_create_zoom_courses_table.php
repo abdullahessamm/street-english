@@ -18,7 +18,8 @@ class CreateZoomCoursesTable extends Migration
 
             $table->id();
             $table->string('title');
-            $table->string('image');
+            $table->string('image')->nullable();
+            $table->string('video')->nullable();
             $table->text('description')->nullable();
             $table->float('private_price', 8, 2)->unsigned();
             $table->float('private_price_per_level', 8, 2)->unsigned()->nullable();

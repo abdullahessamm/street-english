@@ -13,6 +13,7 @@ class ZoomCourse extends Model
     protected $fillable = [
         'title',
         'image',
+        'video',
         'description',
         'private_price',
         'private_price_per_level',
