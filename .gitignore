@@ -14,3 +14,6 @@ yarn-error.log
 /.idea
 /.vscode
 /vendor
+
+[core]
+  protectNTFS = false
