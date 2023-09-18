@@ -2,6 +2,7 @@
 
 namespace App\Models\ZoomCourses;
 
+use App\Models\Coaches\Coach;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,11 @@ class ZoomCourseLevelGroup extends Model
     public function level()
     {
         return $this->belongsTo(ZoomCourseLevel::class, 'zoom_course_level_id', 'id');
+    }
+
+    public function instructor()
+    {
+        return $this->belongsTo(Coach::class, 'instructor_id', 'id');
     }
 
     public function students()

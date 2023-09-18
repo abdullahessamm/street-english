@@ -3,7 +3,6 @@
 namespace App\Policies\Courses;
 
 use App\Admin;
-use App\Models\ZoomCourse;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ZoomCoursesPolicy

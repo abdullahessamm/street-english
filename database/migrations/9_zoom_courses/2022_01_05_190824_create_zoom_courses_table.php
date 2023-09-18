@@ -21,10 +21,14 @@ class CreateZoomCoursesTable extends Migration
             $table->string('image')->nullable();
             $table->string('video')->nullable();
             $table->text('description')->nullable();
-            $table->float('private_price', 8, 2)->unsigned();
-            $table->float('private_price_per_level', 8, 2)->unsigned()->nullable();
-            $table->float('group_price', 8, 2)->unsigned();
-            $table->float('group_price_per_level', 8, 2)->unsigned()->nullable();
+            $table->float('private_price_per_level', 8, 2)->unsigned();
+            $table->float('group_price_per_level', 8, 2)->unsigned();
+            $table->boolean('has_offer_for_group')->default(false);
+            $table->tinyInteger('group_offer_levels')->nullable();
+            $table->float('group_offer_price', 8, 2)->nullable();
+            $table->boolean('has_offer_for_private')->default(false);
+            $table->tinyInteger('private_offer_levels')->nullable();
+            $table->float('private_offer_price', 8, 2)->nullable();
             $table->boolean('isPublished')->default(0)->nullable();
             $table->string('slug');
             $table->timestamps();

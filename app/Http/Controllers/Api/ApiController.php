@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Utils\GoogleDriveHelpers;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
@@ -21,24 +20,39 @@ abstract class ApiController extends Controller
         return response()->json($msg, $status, $headers, $options);
     }
 
-    protected function storeImage(string $path, UploadedFile $file)
+    private function storePublicFile(string $path, UploadedFile $file)
     {
-        if ($storedFile = $file->store("images/$path", [ 'disk' => 'public' ]))
+        if ($storedFile = $file->store($path, [ 'disk' => 'public' ]))
             return Storage::disk('public')->url($storedFile);
 
         return false;
     }
+    
+    protected function storeImage(string $path, UploadedFile $file)
+    {
+        return $this->storePublicFile("images/$path", $file);
+    }
 
-    protected function deleteImage(string $path)
+    protected function deletePublicFile(string $path)
     {
         $path = trim($path, '/');
-        return Storage::disk('public')->delete("images/$path");
+        return Storage::disk('public')->delete($path);
+    }
+
+    protected function deletePublicFileFromUrl(string $url)
+    {
+        $path = str_replace('storage/', '', parse_url($url)['path']);
+        return $this->deletePublicFile($path);
     }
 
     protected function deleteImageFromUrl(string $url)
     {
-        $path = str_replace('storage/images', '', parse_url($url)['path']);
-        return $this->deleteImage($path);
+        return $this->deletePublicFileFromUrl($url);
+    }
+
+    protected function storePublicVideo(string $path, UploadedFile $file)
+    {
+        return $this->storePublicFile("videos/$path", $file);
     }
 
     /**

@@ -30,6 +30,11 @@ class ZoomCourseLevel extends Model
         return $this->hasMany(ZoomCourseLevelPrivate::class, 'zoom_course_level_id', 'id');
     }
 
+    public function sessions()
+    {
+        return $this->hasMany(ZoomCourseSession::class, 'zoom_course_level_id', 'id');
+    }
+
     public function exam()
     {
         return $this->hasOne(ZoomCourseLevelExam::class, 'level_id', 'id');

@@ -15,10 +15,14 @@ class ZoomCourse extends Model
         'image',
         'video',
         'description',
-        'private_price',
         'private_price_per_level',
-        'group_price',
         'group_price_per_level',
+        'has_offer_for_group',
+        'group_offer_levels',
+        'group_offer_price',
+        'has_offer_for_private',
+        'private_offer_levels',
+        'private_offer_price',
         'isPublished',
         'slug'
     ];
