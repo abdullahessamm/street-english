@@ -12,15 +12,22 @@ class ZoomCourseSessionMaterial extends Model
     CONST AVAILABLE_TYPES = [
         'book',
         'video',
+        'audio',
     ];
     CONST TYPE_BOOK = 'book';
     CONST TYPE_VIEDO = 'video';
+    CONST TYPE_AUDIO = 'audio';
 
     protected $table = 'zoom_course_session_materials';
     protected $fillable = [
         'session_id',
+        'title',
         'type',
         'link',
+    ];
+
+    protected $hidden = [
+        'link'
     ];
 
     public function session()

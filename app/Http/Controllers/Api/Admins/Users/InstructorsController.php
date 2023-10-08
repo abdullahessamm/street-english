@@ -96,7 +96,7 @@ class InstructorsController extends ApiController
         if (auth('sanctum')->user()->can('index', Coach::class))
             return $this->apiSuccessResponse([
                 'instructor' => Instructor::with([
-                    'info', 'ieltsCourses', 'recordedCourses', 'zoomCourses'
+                    'info', 'groups', 'privates'
                 ])->find($id)
             ]);
         

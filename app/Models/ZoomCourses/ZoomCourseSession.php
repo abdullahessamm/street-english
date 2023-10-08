@@ -4,6 +4,9 @@ namespace App\Models\ZoomCourses;
 
 use App\Models\Exams\Exam;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ZoomCourseSession extends Model
 {
@@ -13,33 +16,43 @@ class ZoomCourseSession extends Model
         'zoom_course_level_id', 'title', 'description'
     ];
 
-    public function level()
+    public function level(): BelongsTo
     {
         return $this->belongsTo(ZoomCourseLevel::class, 'zoom_course_level_id', 'id');
     }
 
-    public function groups()
+    public function groupsInfo(): BelongsToMany
     {
         return $this->belongsToMany(ZoomCourseLevelGroup::class, ZoomCourseLevelGroupSession::class, 'session_id', 'group_id')
+        ->using(SessionInfoPivot::class)
+        ->as('info')
         ->withPivot([
             'time', 'duration', 'room_link'
         ]);
     }
 
-    public function privates()
+    public function privatesInfo(): BelongsToMany
     {
         return $this->belongsToMany(ZoomCourseLevelPrivate::class, ZoomCourseLevelPrivateSession::class, 'session_id', 'private_id')
+        ->using(SessionInfoPivot::class)
+        ->as('info')
         ->withPivot([
             'time', 'duration', 'room_link'
         ]);
     }
 
-    public function materials()
+    public function yallaNzaker(): HasMany
+    {
+        return $this->hasMany(YallaNzaker::class, 'session_id', 'id');
+    }
+
+    public function materials(): HasMany
     {
         return $this->hasMany(ZoomCourseSessionMaterial::class, 'session_id', 'id');
     }
 
-    public function exercises() {
+    public function exercises(): BelongsToMany
+    {
         return $this->belongsToMany(Exam::class, ZoomCourseSessionExercisePivot::class, 'session_id', 'exam_id')
         ->withPivot(['opened', 'title']);
     }

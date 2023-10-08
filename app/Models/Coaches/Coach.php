@@ -9,6 +9,8 @@ use App\Models\IETLSCourses\IETLSCourse;
 use App\Models\IETLSCourses\IETLSCourseInstructor;
 use App\Models\ZoomCourses\ZoomCourse;
 use App\Models\ZoomCourses\ZoomCourseInstructor;
+use App\Models\ZoomCourses\ZoomCourseLevelGroup;
+use App\Models\ZoomCourses\ZoomCourseLevelPrivate;
 use App\ModelsTraits\Accounts\NameHandler;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,9 +44,14 @@ class Coach extends Model
         return $this->belongsToMany(IETLSCourse::class, IETLSCourseInstructor::class, 'coach_id', 'Ietls_course_id');
     }
 
-    public function zoomCourses()
+    public function groups()
     {
-        return $this->belongsToMany(ZoomCourse::class, ZoomCourseInstructor::class);
+        return $this->hasMany(ZoomCourseLevelGroup::class, 'instructor_id');
+    }
+
+    public function privates()
+    {
+        return $this->hasMany(ZoomCourseLevelPrivate::class, 'instructor_id');
     }
 
     public function info()

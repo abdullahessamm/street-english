@@ -12,6 +12,8 @@ class ZoomCourseLevelExam extends Model
 
     protected $table = 'zoom_course_level_exams';
 
+    protected $primaryKey = 'level_id';
+
     public $timestamps = false;
 
     protected $fillable = [

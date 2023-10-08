@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,11 +21,12 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title'                     => ['required', 'string', 'min:1', 'max:100'],
             'description'               => ['required', 'string', 'min:1', 'max:65000'],
+            'isPublished'               => ['boolean'],
             'private_price_per_level'   => ['required', 'numeric', 'between:0.01,999999.99'],
             'group_price_per_level'     => ['required', 'numeric', 'between:0.01,999999.99'],
             'has_offer_for_group'       => ['boolean'],

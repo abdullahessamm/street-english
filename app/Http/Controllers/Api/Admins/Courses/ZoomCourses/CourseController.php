@@ -11,15 +11,18 @@ use App\Http\Requests\Api\AdminDashboard\Courses\Zoom\Course\UpdateIntroVideoReq
 use App\Http\Requests\Api\AdminDashboard\Courses\Zoom\Course\UpdateRequest;
 use App\Http\Requests\PaginationRequest;
 use App\Models\ZoomCourses\ZoomCourse;
+use Illuminate\Http\JsonResponse;
 
 class CourseController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param PaginationRequest $request
+     * @return JsonResponse
+     * @throws UnauthorizedException
      */
-    public function index(PaginationRequest $request)
+    public function index(PaginationRequest $request): JsonResponse
     {
         if (! auth('sanctum')->user()->can('index', ZoomCourse::class))
             throw new UnauthorizedException();
@@ -37,10 +40,11 @@ class CourseController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @return JsonResponse
+     * @throws UnauthorizedException
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         if (! auth('sanctum')->user()->can('create', ZoomCourse::class))
             throw new UnauthorizedException();
@@ -58,20 +62,28 @@ class CourseController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
+     * @throws UnauthorizedException
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
         if (! auth('sanctum')->user()->can('index', ZoomCourse::class))
             throw new UnauthorizedException();
 
         return $this->apiSuccessResponse([
             'course' => ZoomCourse::with([
+                'levels.sessions.groupsInfo',
+                'levels.sessions.privatesInfo',
+                'levels.sessions.yallaNzaker',
                 'levels.sessions.materials',
                 'levels.sessions.exercises',
                 'levels.groups.instructor',
+                'levels.groups.students',
+                'levels.groups.sessions',
                 'levels.privates.instructor',
+                'levels.privates.student',
+                'levels.privates.sessions',
                 'levels.exam',
             ])->find($id)
         ]);
@@ -80,11 +92,12 @@ class CourseController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param int $id
+     * @return JsonResponse
+     * @throws UnauthorizedException|NotFoundException
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
         if (! auth('sanctum')->user()->can('update', ZoomCourse::class))
             throw new UnauthorizedException();
@@ -93,16 +106,13 @@ class CourseController extends ApiController
         if (! $course)
             throw new NotFoundException(ZoomCourse::class, $id);
 
+        // request data
         $reqData = collect($request->validated());
-        // update course
-        $course->title = $reqData->get('title') ?? $course->title;
-        $course->description = $reqData->get('description') ?? $course->description;
-        $course->private_price = $reqData->get('private_price') ?? $course->private_price;
-        $course->private_price_per_level = $reqData->get('private_price_per_level') ?? $course->private_price_per_level;
-        $course->group_price = $reqData->get('group_price') ?? $course->group_price;
-        $course->group_price_per_level = $reqData->get('group_price_per_level') ?? $course->group_price_per_level;
-        $course->isPublished = $reqData->has('isPublished') ? $reqData->get('isPublished') : $course->isPublished;
 
+        // update course
+        $course->update($reqData->except('levels')->toArray());
+
+        // handle levels changes
         if ($reqData->has('levels')) {
             // update levels and save course
             $this->updateLevels($course, $reqData->get('levels')['update'] ?? []);
@@ -113,9 +123,7 @@ class CourseController extends ApiController
 
             // create new levels
             $course->levels()->createMany($reqData->get('levels')['create'] ?? []);
-        } else
-            $course->save();
-
+        }
 
         return $this->apiSuccessResponse([
             'course' => $course->refresh()
@@ -126,6 +134,7 @@ class CourseController extends ApiController
      * update zoom course's levels (witout commit update to database)
      *
      * @param ZoomCourse $course
+     * @param array $levels
      * @return void
      */
     private function updateLevels(ZoomCourse $course, array $levels): void
@@ -155,7 +164,7 @@ class CourseController extends ApiController
         $course = ZoomCourse::find($id);
         if (! $course)
             throw new NotFoundException(ZoomCourse::class, $id);
-        
+
         // delete saved image
         if ($course->image) {
             $this->deleteImageFromUrl($course->image);
@@ -181,7 +190,7 @@ class CourseController extends ApiController
         $course = ZoomCourse::find($id);
         if (! $course)
             throw new NotFoundException(ZoomCourse::class, $id);
-        
+
         // delete saved video
         if ($course->video) {
             $this->deletePublicFileFromUrl($course->video);

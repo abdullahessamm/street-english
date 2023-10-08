@@ -33,6 +33,8 @@ class ZoomCourseLevelPrivate extends Model
     public function sessions()
     {
         return $this->belongsToMany(ZoomCourseSession::class, ZoomCourseLevelPrivateSession::class, 'private_id', 'session_id')
+        ->as('info')
+        ->using(SessionInfoPivot::class)
         ->withPivot([
             'time', 'duration', 'room_link'
         ]);

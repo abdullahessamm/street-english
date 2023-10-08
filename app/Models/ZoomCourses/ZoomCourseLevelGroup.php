@@ -28,12 +28,15 @@ class ZoomCourseLevelGroup extends Model
     public function students()
     {
         return $this->belongsToMany(ZoomCourseUser::class, ZoomCourseLevelGroupsUsersPivot::class, 'group_id', 'live_course_user_id')
+        ->as('info')
         ->withPivot('joined_at');
     }
 
     public function sessions()
     {
         return $this->belongsToMany(ZoomCourseSession::class, ZoomCourseLevelGroupSession::class, 'group_id', 'session_id')
+        ->as('info')
+        ->using(SessionInfoPivot::class)
         ->withPivot([
             'time', 'duration', 'room_link'
         ]);

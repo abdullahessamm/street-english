@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateZoomCourseSessionMaterialsTable extends Migration
+class CreateYallaNzakerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class CreateZoomCourseSessionMaterialsTable extends Migration
      */
     public function up()
     {
-        Schema::create('zoom_course_session_materials', function (Blueprint $table) {
+        Schema::create('yalla_nzaker', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('session_id');
-            $table->string('title');
-            $table->string('type', 100);
-            $table->text('link');
+            $table->string("title");
+            $table->text("link");
             $table->timestamps();
 
             $table->foreign('session_id')
             ->references('id')
-            ->on('zoom_course_sessions')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
+            ->on('zoom_course_sessions');
         });
     }
 
@@ -36,6 +33,6 @@ class CreateZoomCourseSessionMaterialsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zoom_course_session_materials');
+        Schema::dropIfExists('yalla_nzakers');
     }
 }

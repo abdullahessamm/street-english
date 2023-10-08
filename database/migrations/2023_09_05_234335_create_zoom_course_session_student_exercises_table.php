@@ -22,7 +22,7 @@ class CreateZoomCourseSessionStudentExercisesTable extends Migration
             $table->timestamp('finished_at')->nullable();
             $table->tinyInteger('score')->nullable();
             $table->unsignedBigInteger('corrected_by')->nullable();
-            $table->timestamp('corrected_at');
+            $table->timestamp('corrected_at')->nullable();
 
             $table->foreign('session_id')
             ->references('id')
