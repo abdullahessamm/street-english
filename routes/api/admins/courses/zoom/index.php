@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admins\Courses\ZoomCourses\CourseController;
 use App\Http\Controllers\Api\Admins\Courses\ZoomCourses\GroupsController;
 use App\Http\Controllers\Api\Admins\Courses\ZoomCourses\LevelController;
 use App\Http\Controllers\Api\Admins\Courses\ZoomCourses\PrivatesController;
+use App\Http\Controllers\Api\Admins\Courses\ZoomCourses\RelatedDataController;
 use App\Http\Controllers\Api\Admins\Courses\ZoomCourses\SessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,8 @@ Route::prefix('privates')
 Route::prefix('sessions')
 ->controller(SessionController::class)
 ->group(__DIR__ . DIRECTORY_SEPARATOR . "sessions.php");
+
+// related data
+Route::prefix('related-data')
+->controller(RelatedDataController::class)
+->group(__DIR__ . DIRECTORY_SEPARATOR . "relatedData.php");

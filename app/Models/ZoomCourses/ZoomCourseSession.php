@@ -54,6 +54,7 @@ class ZoomCourseSession extends Model
     public function exercises(): BelongsToMany
     {
         return $this->belongsToMany(Exam::class, ZoomCourseSessionExercisePivot::class, 'session_id', 'exam_id')
+        ->as('info')
         ->withPivot(['opened', 'title']);
     }
 }

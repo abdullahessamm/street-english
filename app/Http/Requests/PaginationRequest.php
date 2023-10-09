@@ -26,7 +26,8 @@ class PaginationRequest extends FormRequest
         return [
             'per_page' => ['nullable', 'numeric'],
             'page' => ['nullable', 'required_with:per_page', 'numeric'],
-            'search' => ['string', 'max:255']
+            'search' => ['string', 'max:255'],
+            'full_object' => ['boolean']
         ];
     }
 }

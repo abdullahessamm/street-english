@@ -18,7 +18,7 @@ class ExamController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(PaginationRequest $request)
     {
@@ -26,6 +26,16 @@ class ExamController extends ApiController
             throw new UnauthorizedException();
 
         $paginateQueries = collect($request->validated());
+
+        if ($paginateQueries->has('full_object')) {
+            if (! $paginateQueries->get('full_object'))
+                return $this->apiSuccessResponse([
+                    'exams' => Exam::where('name', 'like', '%' . $paginateQueries->get('search') . '%')
+                    ->orderBy('created_at', 'DESC')
+                    ->paginate($paginateQueries->get('per_page'), ['*'], null, $paginateQueries->get('page'))
+                    ->all()
+                ]);
+        }
 
         return $this->apiSuccessResponse([
             'exams' => Exam::with([
@@ -58,7 +68,7 @@ class ExamController extends ApiController
 
         $exam = Exam::create($request->validated());
         event(new ExamCreated($exam));
-        
+
         return $this->apiSuccessResponse([
             'exam' => $exam,
         ]);
@@ -106,7 +116,7 @@ class ExamController extends ApiController
         // authorize
         if (! auth('sanctum')->user()->can('update', Exam::class))
             throw new UnauthorizedException();
-    
+
         $data = collect($request->validated());
 
         if (! $exam = Exam::find($id))
@@ -119,7 +129,7 @@ class ExamController extends ApiController
             $sections = [];
             foreach ($data->get('sections') as $sec)
                 $sections[$sec['id']] = ['order' => $sec['order']];
-    
+
             $exam->sections()->sync($sections);
         }
 

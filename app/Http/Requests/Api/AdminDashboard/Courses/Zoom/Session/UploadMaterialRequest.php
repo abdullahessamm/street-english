@@ -37,7 +37,7 @@ class UploadMaterialRequest extends FormRequest
                 'max:' . config('media.max_video_size')
             ],
             "audio" => [
-                "required_if:type" . ZoomCourseSessionMaterial::TYPE_AUDIO,
+                "required_if:type," . ZoomCourseSessionMaterial::TYPE_AUDIO,
                 "file",
                 'mimetypes:audio/mpeg,audio/wav',
                 'max:' . config('media.max_audio_size')

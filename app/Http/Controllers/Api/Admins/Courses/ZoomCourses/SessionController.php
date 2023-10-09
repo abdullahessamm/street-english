@@ -166,10 +166,10 @@ class SessionController extends ApiController
         $stream = Storage::disk('google')->readStream($material->link);
 
         return response()->stream(function () use ($stream) {
-            echo $stream;
+            echo stream_get_contents($stream);
         }, 200, [
             "Content-Length" => Storage::disk('google')->getMetaData($material->link)['size'],
-            "Content-Type"   => "application/octet-stream"
+            "Content-Type"   => $material->type === ZoomCourseSessionMaterial::TYPE_BOOK ? "application/pdf" : "application/octet-stream"
         ]);
     }
 
@@ -232,7 +232,7 @@ class SessionController extends ApiController
         $stream = Storage::disk('google')->readStream($yallaNzakerVideo->link);
 
         return response()->stream(function () use ($stream) {
-            echo $stream;
+            echo stream_get_contents($stream);
         }, 200, [
             "Content-Length" => Storage::disk('google')->getMetaData($yallaNzakerVideo->link)['size'],
             "Content-Type"   => "application/octet-stream"
