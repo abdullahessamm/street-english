@@ -24,7 +24,10 @@ class PrivatesController extends ApiController
 
         return $this->apiSuccessResponse([
             'private' => ZoomCourseLevelPrivate::with([
-                'instructor', 'student', 'sessions'
+                'instructor:id,name',
+                'instructor.info:coach_id,image',
+                'student:id,name,image',
+                'sessions'
             ])->find($id)
         ]);
     }
@@ -37,9 +40,7 @@ class PrivatesController extends ApiController
      */
     public function update(UpdateRequest $request, int $id): JsonResponse
     {
-        $private = ZoomCourseLevelPrivate::with([
-            'student', 'instructor', 'sessions'
-        ])->find($id);
+        $private = ZoomCourseLevelPrivate::with('sessions')->find($id);
 
         if (! $private)
             throw new NotFoundException(ZoomCourseLevelPrivate::class, $id);
@@ -65,7 +66,12 @@ class PrivatesController extends ApiController
         }
 
         return $this->apiSuccessResponse([
-            "private" => $private->refresh()
+            "private" => $private->refresh()->load([
+                'instructor:id,name',
+                'instructor.info:coach_id,image',
+                'student:id,name,image',
+                'sessions'
+            ])
         ]);
     }
 

@@ -29,13 +29,18 @@ class LevelController extends ApiController
             'level' => ZoomCourseLevel::with([
                 'sessions.groupsInfo',
                 'sessions.privatesInfo',
+                'sessions.yallaNzaker',
                 'sessions.materials',
                 'sessions.exercises',
-                'groups.instructor',
-                'groups.students',
-                'privates.instructor',
-                'privates.student',
-                'exam',
+                'groups.instructor:id,name',
+                'groups.instructor.info:coach_id,image',
+                'groups.students:id,name,image',
+                'groups.sessions',
+                'privates.instructor:id,name',
+                'privates.instructor.info:coach_id,image',
+                'privates.student:id,name,image',
+                'privates.sessions',
+                'exam.content:id,name,full_mark',
             ])->find($id)
         ]);
     }
@@ -84,12 +89,24 @@ class LevelController extends ApiController
         if ($reqData->has('groups')) {
             // create
             $level->groups()->createMany($reqData->get('groups')['create'] ?? []);
+
+            // update
+            if (isset($reqData->get('groups')['update'])) {
+                $this->updateGroups(collect($reqData->get('groups')['update']), $level->groups);
+                $level->push();
+            }
+
+            // delete
+            $level->groups()->whereIn('id', $reqData->get('groups')['delete'] ?? [])->delete();
         }
 
         // privates
         if ($reqData->has('privates')) {
             // create
             $level->privates()->createMany($reqData->get('privates')['create'] ?? []);
+
+            // delete
+            $level->privates()->whereIn('id', $reqData->get('privates')['delete'] ?? [])->delete();
         }
 
         // exam
@@ -114,11 +131,15 @@ class LevelController extends ApiController
                 'sessions.yallaNzaker',
                 'sessions.materials',
                 'sessions.exercises',
-                'groups.instructor',
-                'groups.students',
-                'privates.instructor',
-                'privates.student',
-                'exam',
+                'groups.instructor:id,name',
+                'groups.instructor.info:coach_id,image',
+                'groups.students:id,name,image',
+                'groups.sessions',
+                'privates.instructor:id,name',
+                'privates.instructor.info:coach_id,image',
+                'privates.student:id,name,image',
+                'privates.sessions',
+                'exam.content:id,name,full_mark',
             ])
         ]);
     }
@@ -139,5 +160,20 @@ class LevelController extends ApiController
                 $reqSession->first()['description'] :
                 $session->description;
         });
+    }
+
+    /**
+     * @param Collection $reqGroups
+     * @param Collection $levelGroups
+     * @return void
+     */
+    private function updateGroups(Collection $reqGroups, Collection $levelGroups): void
+    {
+        $levelGroups
+            ->whereIn('id', $reqGroups->pluck('id'))
+            ->each(function ($group) use ($reqGroups) {
+                $reqGroup = $reqGroups->where('id', $group->id);
+                $group->name = $reqGroup->first()['name'] ?? $group->name;
+            });
     }
 }

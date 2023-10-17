@@ -24,7 +24,10 @@ class GroupsController extends ApiController
 
         return $this->apiSuccessResponse([
             'group' => ZoomCourseLevelGroup::with([
-                'instructor', 'students', 'sessions'
+                'instructor:id,name',
+                'instructor.info:coach_id,image',
+                'students:id,name,image',
+                'sessions'
             ])->find($id)
         ]);
     }
@@ -37,9 +40,7 @@ class GroupsController extends ApiController
      */
     public function update(UpdateRequest $request, int $id): JsonResponse
     {
-        $group = ZoomCourseLevelGroup::with([
-            'instructor', 'students', 'sessions'
-        ])->find($id);
+        $group = ZoomCourseLevelGroup::with('sessions')->find($id);
 
         if (! $group)
             throw new NotFoundException(ZoomCourseLevelGroup::class, $id);
@@ -69,7 +70,12 @@ class GroupsController extends ApiController
         }
 
         return $this->apiSuccessResponse([
-            'group' => $group->refresh()
+            'group' => $group->refresh()->load([
+                'instructor:id,name',
+                'instructor.info:coach_id,image',
+                'students:id,name,image',
+                'sessions'
+            ])
         ]);
     }
 

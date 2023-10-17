@@ -18,7 +18,7 @@ class CreateZoomCourseLevelExamsTable extends Migration
             $table->unsignedBigInteger('exam_id');
             $table->timestamp('start_at');
             $table->timestamp('student_can_start_until')->nullable();
-            $table->tinyInteger('duration');
+            $table->tinyInteger('duration')->unsigned();
 
             $table->foreign('level_id')
             ->references('id')

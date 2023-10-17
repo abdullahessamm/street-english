@@ -26,7 +26,6 @@ class UpdateRequest extends FormRequest
     {
         return [
             "instructor_id"         => ["integer", "exists:coaches,id"],
-            "live_course_user_id"   => ["integer", "exists:live_course_users,id"],
             "sessions"              => ["array"],
             "sessions.*.id"         => ["required", "integer", "exists:zoom_course_sessions,id"],
             "sessions.*.time"       => ["nullable", "date", "after:now"],

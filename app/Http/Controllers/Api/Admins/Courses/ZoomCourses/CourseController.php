@@ -78,13 +78,15 @@ class CourseController extends ApiController
                 'levels.sessions.yallaNzaker',
                 'levels.sessions.materials',
                 'levels.sessions.exercises',
-                'levels.groups.instructor',
-                'levels.groups.students',
+                'levels.groups.instructor:id,name',
+                'levels.groups.instructor.info:coach_id,image',
+                'levels.groups.students:id,name,image',
                 'levels.groups.sessions',
-                'levels.privates.instructor',
-                'levels.privates.student',
+                'levels.privates.instructor:id,name',
+                'levels.privates.instructor.info:coach_id,image',
+                'levels.privates.student:id,name,image',
                 'levels.privates.sessions',
-                'levels.exam',
+                'levels.exam.content:id,name,full_mark',
             ])->find($id)
         ]);
     }

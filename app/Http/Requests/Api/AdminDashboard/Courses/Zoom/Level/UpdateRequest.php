@@ -47,12 +47,22 @@ class UpdateRequest extends FormRequest
             "groups.create"                         => ["array"],
             "groups.create.*.name"                  => ["required", "string", "min:1", "max:255"],
             "groups.create.*.instructor_id"         => ["required", "integer", "exists:coaches,id"],
+            // update groups
+            "groups.update"                         => ["array"],
+            "groups.update.*.id"                    => ["required", "integer", "exists:zoom_course_level_groups,id"],
+            "groups.update.*.name"                  => ["string", "min:1", "max:255"],
+            // Delete groups
+            "groups.delete"                       => ["array"],
+            "groups.delete.*"                     => ["integer", "exists:zoom_course_level_groups,id"],
 
             /*** Privates ***/
             // Create privates
             "privates.create"                       => ["array"],
             "privates.create.*.instructor_id"       => ["required", "integer", "exists:coaches,id"],
-            "privates.create.*.live_course_user_id" => ["required", "integer", "exists:live_course_users,id"],
+            "privates.create.*.live_course_user_id" => ["required", "integer", "exists:live_course_users,id", "unique:zoom_course_level_privates,live_course_user_id"],
+            // delete privates
+            "privates.delete"                       => ["array"],
+            "privates.delete.*"                     => ["integer", "exists:zoom_course_level_privates,id"],
 
             /*** Exam ***/
             "exam.id"                               => ["integer", "exists:exams,id"],
