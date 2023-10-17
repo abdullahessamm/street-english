@@ -59,7 +59,7 @@ class UpdateRequest extends FormRequest
             // Create privates
             "privates.create"                       => ["array"],
             "privates.create.*.instructor_id"       => ["required", "integer", "exists:coaches,id"],
-            "privates.create.*.live_course_user_id" => ["required", "integer", "exists:live_course_users,id", "unique:zoom_course_level_privates,live_course_user_id"],
+            "privates.create.*.live_course_user_id" => ["required", "integer", "exists:live_course_users,id"],
             // delete privates
             "privates.delete"                       => ["array"],
             "privates.delete.*"                     => ["integer", "exists:zoom_course_level_privates,id"],
