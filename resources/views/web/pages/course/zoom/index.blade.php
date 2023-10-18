@@ -13,13 +13,13 @@
             <div class="text">Replenish him third creature and meat blessed void a fruit gathered you’re, they’re two <br> waters own morning gathered greater shall had behold had seed.</div>
         </div>
         <div class="row clearfix">
-            
+
             @foreach($zoomCourses as $zoomCourse)
             <!-- Topic Block -->
             <div class="cource-block-two col-lg-3 col-md-6 col-sm-12">
                 <div class="inner-box">
                     <div class="image">
-                        <a href="{{ route('zoom-live-course.show', $zoomCourse->slug) }}"><img src="{{ $zoomCourse->image }}" style="width: 270px;height: 150px;" alt="{{ $zoomCourse->title }}" /></a>
+                        <a href="{{ route('zoom-live-course.show', $zoomCourse->slug) }}"><img src="{{ $zoomCourse->image }}" style="width: 100%" alt="{{ $zoomCourse->title }}" /></a>
                     </div>
                     <div class="lower-content">
                         <h5>
@@ -29,7 +29,7 @@
                             <div class="pull-left">
                                 <div class="students" style="color: #1E284B;">{{  $zoomCourse->levels->count() }} {{  $zoomCourse->levels->count() == 1 ? 'Level' : 'Levels' }}</div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

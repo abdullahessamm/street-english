@@ -9,7 +9,7 @@ class ZoomLiveCourseController extends Controller
 {
     public function index()
     {
-        $zoomCourses = ZoomCourse::get();
+        $zoomCourses = ZoomCourse::orderBy('created_at', 'DESC')->get();
 
         return view('web.pages.course.zoom.index')->with('zoomCourses', $zoomCourses);
     }
@@ -17,7 +17,6 @@ class ZoomLiveCourseController extends Controller
     public function show($slug)
     {
         $zoomCourse = ZoomCourse::where('slug', $slug)->first();
-
         return view('web.pages.course.zoom.show')->with('zoomCourse', $zoomCourse);
     }
 }
