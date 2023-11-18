@@ -50,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(100)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(100)->by($request->user('sanctum')?->currentAccessToken()->id ?: $request->ip());
         });
     }
 
@@ -61,7 +61,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function initRoutes()
     {
-        // production production
+        // production
         if (config('app.domain') !== 'localhost') {
             Route::domain('api.' . config('app.domain'))
                 ->middleware('api')
@@ -82,6 +82,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/zoom.php'));
+
+            Route::domain('instructors.' . config('app.domain'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/instructors.php'));
 
             Route::domain('recorded.' . config('app.domain'))
                 ->middleware('web')
@@ -110,6 +115,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/zoom.php'));
+
+            Route::prefix('instructors')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/instructors.php'));
 
             Route::prefix('recorded')
                 ->middleware('web')

@@ -22,6 +22,9 @@ class ZoomCourseLevelReport extends Model
         'strength_points',
         'notes',
     ];
+    protected $hidden = [
+        'lateness'
+    ];
 
     public function level()
     {

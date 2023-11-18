@@ -17,8 +17,8 @@ class CreateZoomCourseSessionExerciseAnswersTable extends Migration
             $table->unsignedBigInteger('student_exercise_id');
             $table->unsignedBigInteger('exam_section_question_id');
             $table->json('student_answer');
-            $table->json('instructor_correction');
-            $table->tinyInteger('score');
+            $table->json('instructor_correction')->nullable();
+            $table->tinyInteger('score')->nullable();
 
             $table->foreign('student_exercise_id', 'student_excercise_constrain')
             ->references('id')

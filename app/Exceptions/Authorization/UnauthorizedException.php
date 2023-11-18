@@ -7,6 +7,13 @@ use Illuminate\Http\Response;
 
 class UnauthorizedException extends Exception
 {
+    private ?string $msg;
+
+    public function __construct(?string $msg = null)
+    {
+        $this->msg = $msg;
+    }
+
     /**
      * Render the exception as an HTTP response.
      *
@@ -18,7 +25,7 @@ class UnauthorizedException extends Exception
         if ($request->wantsJson())
             return response()->json([
                 'success' => false,
-                'message' => 'Access denied'
+                'message' => $this->msg ?? 'Access denied'
             ], Response::HTTP_FORBIDDEN);
     }
 }

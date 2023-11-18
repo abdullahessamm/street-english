@@ -3,13 +3,16 @@
 namespace App\Http\Middleware\Api;
 
 use App\Admin;
+use Illuminate\Foundation\Auth\User;
 
 class EnsureAuthUserIsAdmin extends EnsureUserType
 {
+
     /**
-     * user's model class name
-     *
-     * @var string
+     * @inheritDoc
      */
-    protected string $modelName = Admin::class;
+    protected function getAuthModel(): User
+    {
+        return new Admin();
+    }
 }

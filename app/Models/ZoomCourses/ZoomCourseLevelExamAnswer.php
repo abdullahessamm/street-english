@@ -3,14 +3,18 @@
 namespace App\Models\ZoomCourses;
 
 use App\Models\Exams\ExamSectionQuestion;
+use App\Models\MultiPrimaryKeysModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class ZoomCourseLevelExamAnswer extends Model
+class ZoomCourseLevelExamAnswer extends MultiPrimaryKeysModel
 {
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $primaryKey = [
+        'zoom_course_level_student_exam_id', 'exam_section_question_id'
+    ];
 
     protected $fillable = [
         'zoom_course_level_student_exam_id',

@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'recordedStudent' => \App\Http\Middleware\Api\EnsureAuthUserIsRecordedStudent::class,
         'zoomStudent' => \App\Http\Middleware\Api\EnsureAuthUserIsZoomStudent::class,
         'ieltsStudent' => \App\Http\Middleware\Api\EnsureAuthUserIsIeltsStudent::class,
+        'instructor' => \App\Http\Middleware\Api\EnsureAuthUserIsInstructor::class,
     ];
 }

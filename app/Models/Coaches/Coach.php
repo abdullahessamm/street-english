@@ -7,19 +7,20 @@ use App\Models\Courses\Course;
 use App\Models\Courses\CourseInstructor;
 use App\Models\IETLSCourses\IETLSCourse;
 use App\Models\IETLSCourses\IETLSCourseInstructor;
-use App\Models\ZoomCourses\ZoomCourse;
 use App\Models\ZoomCourses\ZoomCourseInstructor;
 use App\Models\ZoomCourses\ZoomCourseLevelGroup;
 use App\Models\ZoomCourses\ZoomCourseLevelPrivate;
 use App\ModelsTraits\Accounts\NameHandler;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Coach extends Model
+class Coach extends Authenticatable
 {
-    use NameHandler;
+    use NameHandler, Notifiable, HasApiTokens;
 
     protected $table = 'coaches';
-    
+
     protected $fillable = [
         'name',
         'gender',
@@ -28,12 +29,12 @@ class Coach extends Model
         'password',
     ];
 
-    
+
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    
+
     public function recordedCourses()
     {
         return $this->belongsToMany(Course::class, CourseInstructor::class);

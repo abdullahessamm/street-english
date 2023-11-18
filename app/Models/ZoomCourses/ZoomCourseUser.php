@@ -47,16 +47,21 @@ class ZoomCourseUser extends Authenticatable
 
     public function sessionsReports()
     {
-        return $this->hasMany(ZoomCourseSessionReport::class, 'student_id', 'id');
+        return $this->hasMany(ZoomCourseSessionReport::class, 'live_course_user_id', 'id');
     }
 
     public function levelsReports()
     {
-        return $this->hasMany(ZoomCourseLevelReport::class, 'student_id', 'id');
+        return $this->hasMany(ZoomCourseLevelReport::class, 'live_course_user_id', 'id');
     }
 
-    public function solvedSessionsExercises()
+    public function solvedExercises()
     {
         return $this->hasMany(ZoomCourseSessionStudentExercise::class, 'student_id', 'id');
+    }
+
+    public function solvedExams()
+    {
+        return $this->hasMany(ZoomCourseLevelStudentExam::class, 'student_id', 'id');
     }
 }

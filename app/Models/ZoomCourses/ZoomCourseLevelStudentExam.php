@@ -3,6 +3,7 @@
 namespace App\Models\ZoomCourses;
 
 use App\Models\Coaches\Coach;
+use App\Models\Exams\Exam;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,7 @@ class ZoomCourseLevelStudentExam extends Model
 
     protected $fillable = [
         'level_id',
+        'exam_id',
         'student_id',
         'joined_at',
         'finished_at',
@@ -31,6 +33,11 @@ class ZoomCourseLevelStudentExam extends Model
     public function level()
     {
         return $this->belongsTo(ZoomCourseLevel::class, 'level_id', 'id');
+    }
+
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class, 'exam_id', 'id');
     }
 
     public function student()

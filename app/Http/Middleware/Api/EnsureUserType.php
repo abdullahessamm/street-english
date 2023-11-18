@@ -3,28 +3,30 @@
 namespace App\Http\Middleware\Api;
 
 use Closure;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Exceptions\Authorization\UnauthorizedException;
+use Illuminate\Http\Response;
 
 abstract class EnsureUserType
 {
     /**
-     * user's model class name
-     *
-     * @var string
+     * @return User
      */
-    protected string $modelName = '';
+    abstract protected function getAuthModel(): User;
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param \Closure(Request): (Response|RedirectResponse) $next
+     * @return Response|RedirectResponse
+     * @throws UnauthorizedException
      */
     public function handle(Request $request, Closure $next)
     {
-        if (get_class(auth('sanctum')->user()) === $this->modelName)
+        if (get_class(auth('sanctum')->user()) === get_class($this->getAuthModel()))
             return $next($request);
 
         throw new UnauthorizedException();

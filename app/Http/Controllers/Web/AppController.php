@@ -28,11 +28,6 @@ class AppController extends Controller
         return view('web.pages.contact');
     }
 
-    public function workWithUs()
-    {
-        return view('web.pages.work-with-us');
-    }
-
     public function submitWorkWithUs(Request $request)
     {
         $fullname = $request->input('fullname');
@@ -119,19 +114,19 @@ class AppController extends Controller
             <div class="text-center">
                 <h3>Thanks For your Subscription.</h3>
             </div>
-    
+
             <script>
                 $("#subscribe").hide();
             </script>
             HTML;
-            
+
         }else{
 
             echo <<<HTML
             <div class="text-center">
                 <h3>You already on our subscribers list.</h3>
             </div>
-    
+
             <script>
                 $("#subscribe").hide();
             </script>

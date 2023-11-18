@@ -10,7 +10,7 @@ class ZoomCourseSessionStudentExercise extends Model
 {
     use HasFactory;
 
-    protected $table = 'zoom_course_session_exercise_student_infos';
+    protected $table = 'zoom_course_session_student_exercises';
     
     public $timestamps = false;
     

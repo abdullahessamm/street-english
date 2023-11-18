@@ -16,5 +16,6 @@ class EncryptCookies extends Middleware
         'student-token',
         'ieltsuser-token',
         'zoomcourseuser-token',
+        'coach-token',
     ];
 }

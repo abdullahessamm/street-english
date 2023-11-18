@@ -38,4 +38,12 @@ class ZoomCourseLevelExam extends Model
     {
         return $this->belongsTo(Exam::class, 'exam_id', 'id');
     }
+
+    /**
+     * @return bool
+     */
+    public function isEnded(): bool
+    {
+        return $this->start_at->addMinutes($this->duration)->isPast();
+    }
 }

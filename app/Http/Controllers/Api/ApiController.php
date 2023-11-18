@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Iman\Streamer\VideoStreamer;
+use League\Flysystem\FileNotFoundException;
 
 abstract class ApiController extends Controller
 {
@@ -27,7 +28,7 @@ abstract class ApiController extends Controller
 
         return false;
     }
-    
+
     protected function storeImage(string $path, UploadedFile $file)
     {
         return $this->storePublicFile("images/$path", $file);
@@ -61,6 +62,7 @@ abstract class ApiController extends Controller
      * @param string $dirName
      * @param UploadedFile $stream
      * @return string full path to uploaded file
+     * @throws FileNotFoundException
      */
     protected function storeStreamToGoogle(string $dirName, UploadedFile $stream): string
     {

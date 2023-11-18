@@ -41,6 +41,11 @@ return [
             'provider' => 'admins',
         ],
 
+        'web:instructor' => [
+            'driver' => 'session',
+            'provider' => 'instructors',
+        ],
+
         'web:recordedStudent' => [
             'driver' => 'session',
             'provider' => 'recordedStudents',
@@ -84,6 +89,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Admin::class,
+        ],
+
+        'instructors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Coaches\Coach::class,
         ],
 
         'recordedStudents' => [

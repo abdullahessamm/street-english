@@ -75,8 +75,6 @@ Route::post('/ajax/search/certificate/', [CertificateController::class, 'search'
 
 
 /* Start OtherPages */
-Route::get('/work-with-us', [AppController::class, 'workWithUs'])->name('work-with-us');
-Route::post('/ajax/work-with-us/submit', [AppController::class, 'submitWorkWithUs'])->name('ajax.work-with-us.submit');
 Route::post('/ajax/subscribe', 'AppController@subscribe')->name('ajax.subscribe');
 /* End Other Pages */
 

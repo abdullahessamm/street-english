@@ -3,13 +3,16 @@
 namespace App\Http\Middleware\Api;
 
 use App\Models\Students\Student;
+use Illuminate\Foundation\Auth\User;
 
 class EnsureAuthUserIsRecordedStudent extends EnsureUserType
 {
+
     /**
-     * user's model class name
-     *
-     * @var string
+     * @inheritDoc
      */
-    protected string $modelName = Student::class;
+    protected function getAuthModel(): User
+    {
+        return new Student();
+    }
 }

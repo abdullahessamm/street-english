@@ -19,13 +19,12 @@ Route::prefix('/auth')
     ->controller(LoginController::class)
     ->group(__DIR__ . DIRECTORY_SEPARATOR . 'auth.php');
 
-
 Route::middleware('auth:sanctum')->group(function () {
-    // admins dashboaed
+    // admins dashboard
     Route::prefix('/admin-dashboard')
         ->middleware('admin')
         ->group(__DIR__ . DIRECTORY_SEPARATOR . 'admins' . DIRECTORY_SEPARATOR . 'index.php');
-    
+
     // recorded students dashboard
     Route::prefix('/recorded-student-dashboard')
         ->middleware('recordedStudent')
@@ -40,4 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/ielts-student-dashboard')
         ->middleware('ieltsStudent')
         ->group(__DIR__ . DIRECTORY_SEPARATOR . 'ielts-students' . DIRECTORY_SEPARATOR . 'index.php');
+
+    // instructor dashboard
+    Route::prefix('/instructor-dashboard')
+        ->middleware('instructor')
+        ->group(__DIR__ . '/instructors/index.php');
 });

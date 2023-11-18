@@ -24,6 +24,10 @@ class ZoomCourseSessionReport extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'attended_at' => 'datetime',
+    ];
+
     public function session()
     {
         return $this->belongsTo(ZoomCourseSession::class, 'session_id', 'id');
