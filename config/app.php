@@ -184,7 +184,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\GoogleDriveServiceProvider::class,
-
+        // Intervention image
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -239,6 +240,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'ApiToken' => App\Models\ApiToken::class,
         'GoogleHelpers' => App\Utils\GoogleDriveHelpers::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

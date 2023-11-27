@@ -39,6 +39,7 @@ class StudentsController extends ApiController
     {
         $student = ZoomCourseUser::with([
                 'sessionsReports' => function (HasMany $q) {
+                    $q->select(['id', 'live_course_user_id', 'session_id']);
                     $q->where('instructor_id', auth('sanctum')->user()->id);
                     $q->with([
                         'session:id,zoom_course_level_id,title',
@@ -47,6 +48,7 @@ class StudentsController extends ApiController
                     ]);
                 },
                 'levelsReports' => function (HasMany $q) {
+                    $q->select(['id', 'live_course_user_id', 'level_id']);
                     $q->where('instructor_id', auth('sanctum')->user()->id);
                     $q->with([
                         'level:id,zoom_course_id,title',

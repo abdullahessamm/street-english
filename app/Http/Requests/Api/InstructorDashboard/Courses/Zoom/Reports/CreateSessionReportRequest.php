@@ -34,7 +34,7 @@ class CreateSessionReportRequest extends FormRequest
             "weakness_points.*"     => ['string', 'min:1', 'max:2000'],
             "strength_points"       => ['nullable', 'array', 'max:32'],
             "strength_points.*"     => ['string', 'min:1', 'max:2000'],
-            "notes"                 => ['nullable', 'string', 'max:65000']
+            "notes"                 => ['nullable', 'string', 'max:200']
         ];
     }
 }

@@ -3,19 +3,84 @@
 namespace App\Http\Controllers\Api\Instructors\Courses\Zoom;
 
 use App\Exceptions\Authorization\UnauthorizedException;
+use App\Exceptions\Models\NotFoundException;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\InstructorDashboard\Courses\Zoom\Reports\CreateLevelReportRequest;
 use App\Http\Requests\Api\InstructorDashboard\Courses\Zoom\Reports\CreateSessionReportRequest;
 use App\Models\Coaches\Coach;
+use App\Models\ZoomCourses\ZoomCourse;
 use App\Models\ZoomCourses\ZoomCourseLevel;
 use App\Models\ZoomCourses\ZoomCourseLevelReport;
 use App\Models\ZoomCourses\ZoomCourseSession;
 use App\Models\ZoomCourses\ZoomCourseSessionReport;
+use App\Utils\Reports\LevelReportMaker;
+use App\Utils\Reports\SessionReportMaker;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportsController extends ApiController
 {
+    /**
+     * @param int $reportId
+     * @return StreamedResponse
+     * @throws NotFoundException
+     * @throws UnauthorizedException
+     */
+    public function downloadSessionReport(int $reportId): StreamedResponse
+    {
+        $report = ZoomCourseSessionReport::find($reportId);
+        if (! $report)
+            throw new NotFoundException(ZoomCourseSessionReport::class, $reportId);
+
+        if ($report->instructor_id !== auth('sanctum')->user()->id)
+            throw new UnauthorizedException();
+
+        return $this->downloadReport($report);
+    }
+
+    /**
+     * @param int $reportId
+     * @return StreamedResponse
+     * @throws NotFoundException
+     * @throws UnauthorizedException
+     */
+    public function downloadLevelReport(int $reportId): StreamedResponse
+    {
+        $report = ZoomCourseLevelReport::find($reportId);
+        if (! $report)
+            throw new NotFoundException(ZoomCourseLevelReport::class, $reportId);
+
+        if ($report->instructor_id !== auth('sanctum')->user()->id)
+            throw new UnauthorizedException();
+
+        return $this->downloadReport($report);
+    }
+
+    /**
+     * @param ZoomCourseSessionReport|ZoomCourseLevelReport $report
+     * @return StreamedResponse
+     */
+    private function downloadReport(ZoomCourseSessionReport|ZoomCourseLevelReport $report): StreamedResponse
+    {
+        // make report image
+        if ($report instanceof ZoomCourseSessionReport)
+            $reportMaker = new SessionReportMaker($report);
+        else
+            $reportMaker = new LevelReportMaker($report);
+
+        $reportImage = $reportMaker->make()->stream('jpeg', 100);
+
+        return response()->stream(function () use ($reportImage) {
+            echo $reportImage->getContents();
+        }, 200, [
+            "Content-Type" => "image/jpeg",
+            "Content-Length" => $reportImage->getSize()
+        ]);
+    }
 
     /**
      * @param Coach $instructor
@@ -38,6 +103,45 @@ class ReportsController extends ApiController
             ->get(['id']);
 
         return $groupsContainsStudent->count() > 0 || $privatesContainsStudent->count() > 0;
+    }
+
+    public function reportCreationInit(): JsonResponse
+    {
+        request()->validate([
+            'student_id' => 'required|exists:live_course_users,id'
+        ]);
+
+        $courses = ZoomCourse::with([
+            'levels' => function (HasMany $q) {
+                $q->select(['id', 'zoom_course_id', 'title']);
+                $q->whereHas('groups', function (Builder $q) {
+                    $q->where('instructor_id', auth('sanctum')->user()->id);
+                    $q->whereHas('students', function (Builder $q) {
+                        $q->where('id', request()->get('student_id'));
+                    });
+                });
+                $q->orWhereHas('privates', function (Builder $q) {
+                    $q->where('instructor_id', auth('sanctum')->user()->id);
+                    $q->where('live_course_user_id', request()->get('student_id'));
+                });
+            },
+            'levels.sessions:id,zoom_course_level_id,title'
+        ])
+            ->whereHas('levels.groups', function (Builder $q) {
+                $q->where('instructor_id', auth('sanctum')->user()->id);
+                $q->whereHas('students', function (Builder $q) {
+                    $q->where('id', request()->get('student_id'));
+                });
+            })
+            ->orWhereHas('levels.privates', function (Builder $q) {
+                $q->where('instructor_id', auth('sanctum')->user()->id);
+                $q->where('live_course_user_id', request()->get('student_id'));
+            })
+            ->get(['id', 'title']);
+
+        return $this->apiSuccessResponse([
+            'courses' => $courses
+        ]);
     }
 
     /**
@@ -68,6 +172,17 @@ class ReportsController extends ApiController
 
         $reqData->put('instructor_id', $instructor->id);
 
+        if (! $reqData->get('attended_at')) {
+            return $this->apiSuccessResponse([
+                "report" => ZoomCourseSessionReport::create($reqData->only(['session_id', 'instructor_id', 'live_course_user_id'])
+                    ->toArray())->refresh()->load([
+                        'session:id,zoom_course_level_id,title',
+                        'session.level:id,zoom_course_id,title',
+                        'session.level.course:id,title'
+                    ])->only(['id', 'session_id', 'session'])
+            ]);
+        }
+
         if ($reqData->has('weakness_points'))
             $reqData->put('weakness_points', json_encode($reqData->get('weakness_points')));
 
@@ -75,7 +190,11 @@ class ReportsController extends ApiController
             $reqData->put('strength_points', json_encode($reqData->get('strength_points')));
 
         return $this->apiSuccessResponse([
-            "report" => ZoomCourseSessionReport::create($reqData->toArray())->refresh()
+            "report" => ZoomCourseSessionReport::create($reqData->toArray())->refresh()->load([
+                'session:id,zoom_course_level_id,title',
+                'session.level:id,zoom_course_id,title',
+                'session.level.course:id,title'
+            ])->only(['id', 'session_id', 'session'])
         ]);
     }
 
@@ -115,8 +234,18 @@ class ReportsController extends ApiController
         $reqData->put('participation', $participation);
         $reqData->put('instructor_id', $instructor->id);
 
+        if ($reqData->has('weakness_points'))
+            $reqData->put('weakness_points', json_encode($reqData->get('weakness_points')));
+
+        if ($reqData->has('strength_points'))
+            $reqData->put('strength_points', json_encode($reqData->get('strength_points')));
+
         return $this->apiSuccessResponse([
-            "report" => ZoomCourseLevelReport::create($reqData->toArray())->refresh(),
+            "report" => ZoomCourseLevelReport::create($reqData->toArray())
+                ->refresh()->load([
+                    'level:id,zoom_course_id,title',
+                    'level.course:id,title'
+                ])->only(['id', 'level_id', 'level']),
         ]);
     }
 

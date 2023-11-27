@@ -95,7 +95,7 @@ class ZoomMediaController extends ApiController
             echo stream_get_contents($stream);
         }, 200, [
             "Content-Length" => Storage::disk('google')->getMetaData($material->link)['size'],
-            "Content-Type"   => $material->type === ZoomCourseSessionMaterial::TYPE_BOOK ? "application/pdf" : "application/octet-stream"
+            "Content-Type"   => Storage::disk('google')->getMetaData($material->link)['mimetype']
         ]);
     }
 }
