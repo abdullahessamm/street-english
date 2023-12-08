@@ -11,9 +11,9 @@ class ZoomCourseSessionStudentExercise extends Model
     use HasFactory;
 
     protected $table = 'zoom_course_session_student_exercises';
-    
+
     public $timestamps = false;
-    
+
     protected $fillable = [
         'session_id',
         'exam_id',
@@ -26,9 +26,9 @@ class ZoomCourseSessionStudentExercise extends Model
     ];
 
     protected $casts = [
-        'joined_at',
-        'finished_at',
-        'corrected_at',
+        'joined_at' => 'date',
+        'finished_at' => 'date',
+        'corrected_at' => 'date',
     ];
 
     public function session()

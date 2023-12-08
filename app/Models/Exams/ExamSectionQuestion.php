@@ -33,7 +33,7 @@ class ExamSectionQuestion extends Model
 
     public function section()
     {
-        return $this->belongsTo(ExamSection::class);
+        return $this->belongsTo(ExamSection::class, 'exam_section_id', 'id');
     }
 
 }
