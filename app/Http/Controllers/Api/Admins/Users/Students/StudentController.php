@@ -220,7 +220,7 @@ abstract class StudentController extends ApiController {
         if ($request->has('image')) {
             // file
             $file = $request->file('image');
-            $imageUrl = $this->storeImage($imagePath, $file); // store image
+            $imageUrl = $this->storeOptimizedPicture($imagePath, $file); // store image
             // save image name in student table
             $student->image = $imageUrl ?? null;
         }

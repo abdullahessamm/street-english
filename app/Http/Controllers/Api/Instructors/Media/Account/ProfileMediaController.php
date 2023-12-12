@@ -40,13 +40,13 @@ class ProfileMediaController extends ApiController
 
         // store the new image if image has been sent
         if ($request->has('image')) {
-            if ($imageUrl = $this->storeImage('instructors/' . $instructor->id, $request->file('image')))
+            if ($imageUrl = $this->storeOptimizedPicture('instructors/' . $instructor->id, $request->file('image')))
                 $instructor->info->image = $imageUrl;
         }
 
         $instructor->info->save(); // save update to database.
         return $this->apiSuccessResponse([
-            'image' => $imageUrl ?? null
+            'image' => $imageUrl ?? 'null'
         ]);
     }
 

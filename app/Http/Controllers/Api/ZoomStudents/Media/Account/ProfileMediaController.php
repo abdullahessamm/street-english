@@ -35,7 +35,7 @@ class ProfileMediaController extends ApiController
 
         // store the new image if image has been sent
         if ($request->has('image')) {
-            if ($imageUrl = $this->storeImage('zoom-course-users/' . $student->id, $request->file('image')))
+            if ($imageUrl = $this->storeOptimizedPicture('zoom-course-users/' . $student->id, $request->file('image')))
                 $student->image = $imageUrl;
         }
 

@@ -6,9 +6,11 @@ use Illuminate\Support\Str;
 use App\Utils\GoogleDriveHelpers;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 use Iman\Streamer\VideoStreamer;
 use League\Flysystem\FileNotFoundException;
+use \Intervention\Image\Facades\Image;
 
 abstract class ApiController extends Controller
 {
@@ -32,6 +34,18 @@ abstract class ApiController extends Controller
     protected function storeImage(string $path, UploadedFile $file)
     {
         return $this->storePublicFile("images/$path", $file);
+    }
+
+    protected function storeOptimizedPicture(string $path, UploadedFile $file, int $quality = 50)
+    {
+        $img = Image::make($file);
+        $path = "images/$path/" . Str::random() . "." . $file->extension();
+        $imgStream = $img->stream($file->extension(), $quality)->getContents();
+        $imgResource = tmpfile();
+        fwrite($imgResource, $imgStream);
+        $saved = Storage::disk('public')->writeStream($path, $imgResource);
+        fclose($imgResource);
+        return $saved ? Storage::disk('public')->url($path) : false;
     }
 
     protected function deletePublicFile(string $path)
