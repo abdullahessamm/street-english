@@ -24,7 +24,7 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/logout', 'logout')->name('zoomStudent.logout');
 });
 
-Route::view('/{params?}', 'zoom-users.app')
+Route::view('/{param?}', 'zoom-users.app')
     ->where('param', '.*')
     ->name('zoomStudent.home')
     ->middleware('auth:web:zoomStudent,zoomStudent.login');
