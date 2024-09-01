@@ -97,12 +97,7 @@ abstract class StudentController extends ApiController {
             throw new UnauthorizedException();
 
             return $this->apiSuccessResponse([
-                'student' => call_user_func(
-                        [$this->modelClassName, 'with'],
-                        ['courses' => function (BelongsToMany $query) {
-                            $query->orderBy('created_at', 'DESC');
-                        }]
-                    )->find($id)
+                'student' => call_user_func([$this->modelClassName, 'find'], $id)
             ]);
     }
 

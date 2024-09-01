@@ -34,6 +34,18 @@ class ZoomCourseUser extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function courses()
+    {
+        return $this->belongsToMany(ZoomCourse::class, LiveCourseUserCourse::class, 'user_id', 'course_id')
+            ->withPivot([
+                'status',
+                'started_at',
+                'delayed_at',
+                'finished_at'
+            ])
+            ->as('info');
+    }
+
     public function privates()
     {
         return $this->hasMany(ZoomCourseLevelPrivate::class, 'live_course_user_id', 'id');

@@ -4,7 +4,6 @@
 
 use App\Http\Controllers\Api\Admins\Users\Students\IELTSCourseStudentsController;
 use App\Http\Controllers\Api\Admins\Users\Students\RecordedCourseStudentsController;
-use App\Http\Controllers\Api\Admins\Users\Students\ZoomCourseStudentsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('recorded')
@@ -16,5 +15,4 @@ Route::prefix('ietls')
 ->group(__DIR__ . DIRECTORY_SEPARATOR . 'ieltsCourseStudents.php');
 
 Route::prefix('zoom')
-->controller(ZoomCourseStudentsController::class)
-->group(__DIR__ . DIRECTORY_SEPARATOR . 'zoomCourseStudents.php');
+->group(__DIR__ . DIRECTORY_SEPARATOR . 'zoom' . DIRECTORY_SEPARATOR . 'index.php');

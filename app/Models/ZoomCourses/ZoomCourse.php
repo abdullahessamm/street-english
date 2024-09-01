@@ -2,8 +2,6 @@
 
 namespace App\Models\ZoomCourses;
 
-use App\Models\Coaches\Coach;
-use App\Models\EnrolledStudents\EnrolledStudentForZoomCourse;
 use Illuminate\Database\Eloquent\Model;
 
 class ZoomCourse extends Model
@@ -30,5 +28,16 @@ class ZoomCourse extends Model
     public function levels()
     {
         return $this->hasMany(ZoomCourseLevel::class, 'zoom_course_id', 'id');
+    }
+
+    public function students() {
+        return $this->belongsToMany(ZoomCourseUser::class, LiveCourseUserCourse::class, 'course_id', 'user_id')
+            ->withPivot([
+                'status',
+                'started_at',
+                'delayed_at',
+                'finished_at'
+            ])
+            ->as('info');
     }
 }

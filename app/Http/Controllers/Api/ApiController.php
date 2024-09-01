@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use App\Utils\GoogleDriveHelpers;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Support\Facades\Storage;
 use Iman\Streamer\VideoStreamer;
 use League\Flysystem\FileNotFoundException;

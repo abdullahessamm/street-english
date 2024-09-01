@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AppConfigDataController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// landing page data
+Route::get('/landing-page', [AppConfigDataController::class, 'getLandingPageConfigData']);
+
+// courses routes
+Route::prefix('/courses')
+    ->group(__DIR__ . DIRECTORY_SEPARATOR . 'courses' . DIRECTORY_SEPARATOR . 'index.php');
 
 // authentication routes
 Route::prefix('/auth')

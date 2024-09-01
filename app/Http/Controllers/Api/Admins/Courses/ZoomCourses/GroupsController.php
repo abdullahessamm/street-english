@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admins\Courses\ZoomCourses;
 
+use App\Events\Zoom\Courses\CourseStudentsUpdated;
 use App\Exceptions\Authorization\UnauthorizedException;
 use App\Exceptions\Models\NotFoundException;
 use App\Http\Controllers\Api\ApiController;
@@ -51,8 +52,12 @@ class GroupsController extends ApiController
         $group->update($reqData->only(['name', 'instructor_id'])->toArray());
 
         // students
-        if ($reqData->has('students'))
+        if ($reqData->has('students')) {
+            // sync students to group
             $group->students()->sync($reqData->get('students'));
+            // fire CourseStudentsUpdated event
+            event(new CourseStudentsUpdated($group->level()->first(['id', 'zoom_course_id'])->course()->first(['id'])));
+        }
 
         // sessions
         if ($reqData->has('sessions')) {

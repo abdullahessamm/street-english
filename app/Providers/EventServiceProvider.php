@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\Auth\RegisterEvent;
+use App\Events\Zoom\Courses\CourseStudentsUpdated as ZoomCourseStudentsUpdated;
 use App\Listeners\Auth\RegisterEventListeners\SendVerificationMail;
+use App\Listeners\Zoom\Courses\CourseStudentsUpdatedListeners\SyncStudentsWithUserCoursesTable;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -16,7 +18,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         RegisterEvent::class => [
             SendVerificationMail::class
-        ]
+        ],
+        ZoomCourseStudentsUpdated::class => [
+            SyncStudentsWithUserCoursesTable::class,
+        ],
     ];
 
     /**

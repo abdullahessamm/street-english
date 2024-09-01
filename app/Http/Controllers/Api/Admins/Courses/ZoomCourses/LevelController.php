@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admins\Courses\ZoomCourses;
 
+use App\Events\Zoom\Courses\CourseStudentsUpdated;
 use App\Exceptions\Authorization\UnauthorizedException;
 use App\Exceptions\Models\NotFoundException;
 use App\Http\Controllers\Api\ApiController;
@@ -97,7 +98,11 @@ class LevelController extends ApiController
             }
 
             // delete
-            $level->groups()->whereIn('id', $reqData->get('groups')['delete'] ?? [])->delete();
+            if (isset($reqData->get('groups')['delete'])) {
+                $level->groups()->whereIn('id', $reqData->get('groups')['delete'] ?? [])->delete();
+                // fire CourseStudentsUpdated event
+                event(new CourseStudentsUpdated($level->course()->first(['id'])));
+            }
         }
 
         // privates
@@ -107,6 +112,9 @@ class LevelController extends ApiController
 
             // delete
             $level->privates()->whereIn('id', $reqData->get('privates')['delete'] ?? [])->delete();
+            
+            // fire CourseStudentsUpdated event
+            event(new CourseStudentsUpdated($level->course()->first(['id'])));
         }
 
         // exam
